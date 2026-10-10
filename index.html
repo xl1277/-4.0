@@ -1,0 +1,3145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>陆沉 · 陪着你</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  html,body{height:100%}
+  body{
+    margin:0;padding:24px 16px 60px;min-height:100vh;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:#5a4a52;
+    background-color:#fff6f8;
+    background-image:linear-gradient(160deg,#fff6f8 0%,#ffe9ef 45%,#fff7f2 100%);
+    background-attachment:fixed;background-size:cover;
+    background-position:center;background-repeat:no-repeat;
+    transition:background-color .35s;-webkit-font-smoothing:antialiased;
+  }
+  body[data-bg="pink"]{background-image:linear-gradient(160deg,#fff6f8 0%,#ffe9ef 45%,#fff7f2 100%)}
+  body[data-bg="purple"]{background-image:linear-gradient(160deg,#f9f6ff 0%,#efe8ff 45%,#fdf6ff 100%)}
+  body[data-bg="blue"]{background-image:linear-gradient(160deg,#f6faff 0%,#e6f0ff 45%,#f2f9ff 100%)}
+  body[data-bg="mint"]{background-image:linear-gradient(160deg,#f4fdf8 0%,#e0f7ec 45%,#f6fdfa 100%)}
+  body[data-bg="peach"]{background-image:linear-gradient(160deg,#fff9f2 0%,#ffeede 45%,#fff6ec 100%)}
+  body[data-bg="lavender"]{background-image:linear-gradient(160deg,#fdf6fc 0%,#f4e4f5 45%,#fdf5fb 100%)}
+  body[data-bg="sunset"]{background-image:linear-gradient(160deg,#fff5f2 0%,#ffe4dc 45%,#fff2ec 100%)}
+  body[data-bg="night"]{background-image:linear-gradient(160deg,#f3f5fa 0%,#e4e9f5 45%,#f0f4fa 100%)}
+  body[data-bg="image"]::before,
+  body[data-bg="image"]::after{opacity:0}
+
+  body::before,body::after{
+    content:"";position:fixed;border-radius:50%;filter:blur(70px);opacity:.55;
+    z-index:0;pointer-events:none;transition:opacity .4s;
+  }
+  body::before{width:260px;height:260px;background:#ffc8d6;top:-90px;left:-90px}
+  body::after{width:300px;height:300px;background:#ffe0c2;bottom:-130px;right:-110px}
+
+  .app{position:relative;z-index:1;max-width:460px;margin:0 auto}
+
+  .header{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .back{
+    width:34px;height:34px;flex:none;border-radius:50%;
+    border:1px solid #ffd6e0;background:#fff;color:#e0728f;
+    font-size:19px;line-height:1;cursor:pointer;transition:.2s;
+    display:grid;place-items:center;padding-bottom:3px;
+    box-shadow:0 5px 14px rgba(255,170,190,.18);
+  }
+  .back:active{transform:scale(.92)}
+
+  .avatar{
+    width:52px;height:52px;flex:none;border-radius:50%;
+    background:linear-gradient(140deg,#ffb3c6,#ff8fab);
+    color:#fff;display:grid;place-items:center;
+    font-size:21px;font-weight:600;letter-spacing:1px;
+    box-shadow:0 8px 20px rgba(255,143,171,.35);
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    transition:.2s;overflow:hidden;
+  }
+  .avatar.sm{width:32px;height:32px;font-size:12px;letter-spacing:0;box-shadow:0 3px 9px rgba(255,143,171,.28)}
+  #avatarTop{cursor:pointer}
+  #avatarTop:active{transform:scale(.94)}
+  #avatarTop:hover{box-shadow:0 8px 22px rgba(255,143,171,.5)}
+
+  .avatar.shake{animation:shake .4s ease 2}
+  @keyframes shake{
+    0%,100%{transform:translateX(0) rotate(0)}
+    20%{transform:translateX(-3px) rotate(-3deg)}
+    60%{transform:translateX(3px) rotate(3deg)}
+  }
+
+  .who{min-width:0}
+  .who h1{margin:0 0 3px;font-size:17px;letter-spacing:.5px}
+  .who p{margin:0;font-size:12px;color:#b096a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .bell{
+    margin-left:auto;flex:none;width:38px;height:38px;border-radius:50%;
+    border:1px solid #ffd6e0;background:#fff;font-size:16px;cursor:pointer;
+    box-shadow:0 6px 16px rgba(255,170,190,.2);transition:.2s;
+  }
+  .bell.on{background:linear-gradient(120deg,#ffb3c6,#ff8fab);border-color:transparent}
+  .bell:active{transform:scale(.94)}
+
+  .bubble{
+    background:rgba(255,255,255,.94);
+    border:1px solid rgba(255,180,196,.6);
+    border-left:4px solid #ff9ab5;
+    border-radius:16px 18px 18px 16px;
+    padding:13px 16px;font-size:13.5px;line-height:1.65;color:#6b565e;
+    box-shadow:0 10px 26px rgba(255,175,195,.16);
+    margin-bottom:16px;min-height:52px;
+  }
+  #bubbleText{display:inline-block;animation:fadeUp .45s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .card{
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,190,205,.55);
+    border-radius:22px;padding:18px 16px;
+    box-shadow:0 10px 30px rgba(255,170,190,.14);
+    margin-bottom:14px;
+  }
+
+  .modes{display:grid;gap:12px}
+  .mode-card{
+    display:grid;grid-template-columns:46px 1fr;
+    gap:3px 14px;text-align:left;
+    padding:17px 16px;border-radius:22px;
+    border:1px solid rgba(255,190,205,.6);
+    background:rgba(255,255,255,.9);
+    box-shadow:0 10px 26px rgba(255,170,190,.14);
+    cursor:pointer;font-family:inherit;transition:.18s;
+  }
+  .mode-card:active{transform:scale(.985)}
+  .mode-icon{
+    grid-row:1/4;align-self:center;
+    width:46px;height:46px;border-radius:15px;
+    display:grid;place-items:center;font-size:21px;
+    background:linear-gradient(140deg,#ffe4ec,#ffd0dd);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+  }
+  .mode-name{font-size:15.5px;font-weight:600;color:#e0728f;letter-spacing:1px}
+  .mode-desc{font-size:12.5px;color:#a98f98;line-height:1.5}
+  .mode-badge{font-size:11.5px;color:#c9a9b5;margin-top:2px}
+
+  .form{display:flex;gap:8px;flex-wrap:wrap}
+  .field{
+    border:1.5px solid #ffd6e0;border-radius:14px;padding:10px 12px;
+    font-size:14px;font-family:inherit;color:#5a4a52;background:#fff;
+    outline:none;transition:.2s;min-width:0;
+  }
+  .field::placeholder{color:#d3bcc4}
+  .field:focus{border-color:#ff9ab5;box-shadow:0 0 0 3px rgba(255,154,181,.18)}
+  input[type=time].field{width:104px;flex:none;padding:10px 8px}
+  input[type=text].field{flex:1}
+  .primary-btn{
+    width:100%;margin-top:10px;border:0;border-radius:14px;padding:12px;
+    font-size:14px;font-weight:600;font-family:inherit;letter-spacing:.5px;
+    color:#fff;background:linear-gradient(120deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 8px 18px rgba(255,127,163,.32);
+    cursor:pointer;transition:.15s;
+  }
+  .primary-btn:active{transform:scale(.98);box-shadow:0 4px 12px rgba(255,127,163,.3)}
+  .primary-btn:disabled{opacity:.6;cursor:default;transform:none}
+
+  .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+  .label{font-size:12.5px;color:#a98f98;letter-spacing:.5px}
+  .count{font-size:12.5px;font-weight:600;color:#e0728f}
+  .progress{height:6px;border-radius:99px;background:#ffe6ec;overflow:hidden}
+  .progress i{
+    display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,#ffc2d3,#ff8fab);
+    transition:width .45s cubic-bezier(.4,0,.2,1);
+  }
+  .rate{font-size:12px;color:#b096a0;margin-top:9px;line-height:1.6}
+
+  .list{list-style:none;margin:0;padding:0}
+  .task{
+    display:flex;align-items:center;gap:10px;
+    padding:11px 12px;margin-bottom:8px;
+    background:#fff;border:1px solid #ffe2ea;border-radius:16px;
+    box-shadow:0 4px 14px rgba(255,180,200,.1);
+    animation:in .28s ease;
+  }
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .check{
+    width:24px;height:24px;flex:none;border-radius:50%;
+    border:1.5px solid #ffc3d3;background:#fff;color:transparent;
+    display:grid;place-items:center;font-size:13px;line-height:1;
+    cursor:pointer;transition:.2s;
+  }
+  .task.done .check{
+    background:linear-gradient(120deg,#ff9ab5,#ff7fa3);
+    border-color:transparent;color:#fff;
+  }
+  .tag{
+    flex:none;font-size:12px;font-variant-numeric:tabular-nums;
+    color:#e0728f;background:#ffeef3;border-radius:8px;padding:3px 8px;
+  }
+  .text{flex:1;font-size:14px;line-height:1.45;word-break:break-word;transition:.2s}
+  .task.done .text{text-decoration:line-through;color:#c0a8b1}
+  .del{
+    width:24px;height:24px;flex:none;border:0;border-radius:8px;
+    background:transparent;color:#e6b7c4;font-size:17px;line-height:1;
+    cursor:pointer;transition:.2s;
+  }
+  .del:hover{color:#ff7fa3;background:#fff0f4}
+  .task.overdue{border-color:#ffc9c9;background:#fffafa;box-shadow:0 4px 14px rgba(255,120,120,.12)}
+  .task.overdue .tag{background:#ffe4e4;color:#e05555}
+  .task.overdue .text{color:#8a5a5a}
+
+  .empty{text-align:center;padding:20px 0 8px;font-size:13px;color:#c9b2ba;line-height:1.7}
+
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .chip{
+    padding:12px 4px;border-radius:14px;
+    border:1.5px solid #ffd6e0;background:#fff;
+    font-size:13.5px;font-family:inherit;color:#b096a0;
+    cursor:pointer;transition:.18s;
+  }
+  .chip:active{transform:scale(.96)}
+  .chip.active{
+    border-color:transparent;
+    background:linear-gradient(120deg,#ffb3c6,#ff8fab);
+    color:#fff;font-weight:600;
+    box-shadow:0 6px 16px rgba(255,143,171,.3);
+  }
+  .custom-row{display:flex;align-items:center;gap:9px;margin-top:10px}
+  .custom-row input{
+    flex:1;border:1.5px solid #ffd6e0;border-radius:14px;
+    padding:11px 14px;font-size:14px;font-family:inherit;
+    color:#5a4a52;background:#fff;outline:none;transition:.2s;
+    -moz-appearance:textfield;min-width:0;
+  }
+  .custom-row input::-webkit-outer-spin-button,
+  .custom-row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .custom-row input::placeholder{color:#d3bcc4}
+  .custom-row input:focus{border-color:#ff9ab5;box-shadow:0 0 0 3px rgba(255,154,181,.18)}
+  .custom-row span{font-size:13px;color:#b096a0;flex:none}
+  .label-block{font-size:12.5px;color:#a98f98;letter-spacing:.5px;margin-bottom:11px;display:block}
+
+  .ring-wrap{position:relative;width:min(248px,64vw);aspect-ratio:1;margin:4px auto 6px}
+  .ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:#ffe6ec;stroke-width:11}
+  .ring-fg{
+    fill:none;stroke:url(#ringGrad);stroke-width:11;stroke-linecap:round;
+    transition:stroke-dashoffset .35s linear;
+  }
+  .ring-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+  .clock{
+    font-size:clamp(34px,11vw,44px);font-weight:600;color:#e0728f;
+    letter-spacing:1px;font-variant-numeric:tabular-nums;line-height:1.1;
+  }
+  .clock-sub{font-size:12px;color:#c9a9b5;letter-spacing:2px;margin-top:5px}
+
+  .watch-tag{
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    font-size:12px;color:#b78c9c;letter-spacing:.5px;margin:2px 0 16px;
+  }
+  .dot-live{
+    width:7px;height:7px;border-radius:50%;background:#ff5c85;
+    animation:pulse 1.1s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.3;transform:scale(1.5)}
+  }
+
+  .quit-btn{
+    width:100%;border:1.5px solid #ffd6e0;border-radius:15px;padding:13px;
+    font-size:14px;font-family:inherit;color:#c9768e;background:#fff;
+    cursor:pointer;transition:.18s;letter-spacing:.5px;
+  }
+  .quit-btn:active{transform:scale(.98);background:#fff5f8}
+
+  .stat{
+    text-align:center;font-size:12.5px;color:#b096a0;letter-spacing:.5px;
+    padding:12px 0 0;
+  }
+  .stat b{color:#e0728f;font-size:15px;font-variant-numeric:tabular-nums;margin:0 3px}
+
+  .footer{text-align:center;font-size:11.5px;color:#cbb3bb;margin-top:20px;letter-spacing:.5px}
+
+  .avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  .av-opt{
+    aspect-ratio:1;border-radius:50%;
+    border:2px solid transparent;
+    display:grid;place-items:center;
+    color:#fff;font-size:17px;font-weight:600;letter-spacing:1px;
+    cursor:pointer;font-family:inherit;transition:.2s;
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    overflow:hidden;
+  }
+  .av-opt:active{transform:scale(.94)}
+  .av-opt.active{border-color:#ff7fa3;box-shadow:0 0 0 3px rgba(255,127,163,.22);transform:scale(1.05)}
+
+  .bg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .bg-opt{
+    aspect-ratio:1;border-radius:14px;
+    border:2px solid transparent;
+    cursor:pointer;transition:.2s;
+    box-shadow:0 3px 10px rgba(255,180,200,.14);
+    background-size:cover;background-position:center;
+  }
+  .bg-opt:active{transform:scale(.94)}
+  .bg-opt.active{border-color:#ff7fa3;box-shadow:0 0 0 3px rgba(255,127,163,.22);transform:scale(1.05)}
+
+  .upload-btn{
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    width:100%;padding:13px;border:1.5px dashed #ffd6e0;border-radius:14px;
+    font-size:13.5px;color:#c9768e;cursor:pointer;transition:.2s;
+    background:#fffafc;font-family:inherit;
+  }
+  .upload-btn:hover,.upload-btn:active{border-color:#ff9ab5;background:#fff0f4}
+  .upload-btn input{display:none}
+
+  .reset-btn{
+    width:100%;padding:13px;border:1.5px solid #ffd6e0;border-radius:14px;
+    background:#fff;color:#c9768e;font-size:13.5px;font-family:inherit;
+    cursor:pointer;transition:.2s;letter-spacing:.5px;
+  }
+  .reset-btn:active{transform:scale(.98);background:#fff5f8}
+
+  .water-main{text-align:center;padding:14px 0 4px}
+  .water-num{
+    font-size:42px;font-weight:600;color:#e0728f;line-height:1;
+    font-variant-numeric:tabular-nums;letter-spacing:.5px;
+  }
+  .water-num small{font-size:14px;color:#c9a9b5;font-weight:500;margin-left:5px;letter-spacing:1px}
+  .water-sub{font-size:12px;color:#b096a0;margin-top:9px;letter-spacing:.5px;line-height:1.6}
+
+  .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+  .quick-btn{
+    padding:12px 4px;border-radius:14px;
+    border:1.5px solid #ffd6e0;background:#fff;
+    font-size:13.5px;font-family:inherit;color:#c9768e;
+    cursor:pointer;transition:.18s;
+  }
+  .quick-btn:active{transform:scale(.95);background:#fff5f8}
+  .quick-btn:hover{border-color:#ff9ab5;background:#fff5f8}
+
+  .ghost-btn{
+    width:100%;margin-top:10px;border:1.5px solid #ffd6e0;border-radius:14px;
+    padding:11px;font-size:13.5px;font-family:inherit;color:#c9768e;
+    background:#fff;cursor:pointer;transition:.18s;letter-spacing:.5px;
+  }
+  .ghost-btn:active{transform:scale(.98);background:#fff5f8}
+  .ghost-btn:disabled{opacity:.6;cursor:default}
+
+  .mini-btn{
+    flex:none;border:0;border-radius:13px;padding:11px 16px;
+    font-size:13.5px;font-family:inherit;letter-spacing:.5px;
+    color:#fff;background:linear-gradient(120deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 6px 14px rgba(255,127,163,.28);
+    cursor:pointer;transition:.15s;
+  }
+  .mini-btn:active{transform:scale(.96)}
+  .mini-btn:disabled{opacity:.6;cursor:default}
+  .mini-btn.plain{
+    background:#fff;color:#c9768e;
+    border:1.5px solid #ffd6e0;box-shadow:none;
+    padding:6px 12px;font-size:12px;border-radius:11px;
+  }
+
+  .record{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;margin-bottom:8px;
+    background:#fff;border:1px solid #ffe2ea;border-radius:14px;
+    box-shadow:0 4px 14px rgba(255,180,200,.1);
+    font-size:13.5px;animation:in .28s ease;
+  }
+  .record .r-time{
+    flex:none;font-size:11.5px;color:#c9a9b5;
+    font-variant-numeric:tabular-nums;letter-spacing:.3px;
+  }
+  .record .r-main{flex:1;min-width:0;word-break:break-word;color:#6b565e;line-height:1.4}
+  .record .r-amt{
+    flex:none;font-weight:600;font-variant-numeric:tabular-nums;
+    font-size:13.5px;letter-spacing:.3px;
+  }
+  .record .r-amt.out{color:#e0728f}
+  .record .r-amt.in{color:#3f9e73}
+
+  .seg-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .seg{
+    padding:10px;border-radius:13px;border:1.5px solid #ffd6e0;background:#fff;
+    font-size:13.5px;font-family:inherit;color:#b096a0;
+    cursor:pointer;transition:.18s;letter-spacing:1px;
+  }
+  .seg:active{transform:scale(.97)}
+  .seg.active{
+    border-color:transparent;color:#fff;font-weight:600;
+    background:linear-gradient(120deg,#ffb3c6,#ff8fab);
+    box-shadow:0 6px 16px rgba(255,143,171,.28);
+  }
+
+  .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .cat{
+    padding:9px 2px;border-radius:13px;
+    border:1.5px solid #ffd6e0;background:#fff;
+    font-size:11.5px;font-family:inherit;color:#b096a0;
+    cursor:pointer;transition:.18s;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+  }
+  .cat i{font-style:normal;font-size:16px;line-height:1}
+  .cat:active{transform:scale(.95)}
+  .cat.active{
+    border-color:#ff9ab5;background:#fff0f4;color:#e0728f;font-weight:600;
+    box-shadow:0 4px 12px rgba(255,154,181,.18);
+  }
+
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;margin-top:4px}
+  .stat-grid .k{font-size:11.5px;color:#b096a0;letter-spacing:.5px;margin-bottom:6px}
+  .stat-grid .v{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+
+  .chat-screen{
+    position:fixed;inset:0;z-index:40;
+    display:flex;flex-direction:column;
+    max-width:560px;margin:0 auto;
+    background:rgba(255,248,250,.95);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 0 70px rgba(180,120,140,.22);
+    animation:chatIn .26s ease;
+  }
+  @keyframes chatIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  .chat-top{
+    flex:none;display:flex;align-items:center;gap:8px;
+    padding:12px 12px 10px;
+    padding-top:calc(12px + env(safe-area-inset-top));
+    border-bottom:1px solid rgba(255,190,205,.55);
+    background:rgba(255,255,255,.75);
+  }
+  .chat-who{min-width:0;flex:1}
+  .chat-who h1{margin:0 0 2px;font-size:15px;letter-spacing:.5px;color:#5a4a52}
+  .chat-who p{margin:0;font-size:11.5px;color:#b096a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chat-ic{
+    flex:none;width:34px;height:34px;border-radius:50%;
+    border:1px solid #ffd6e0;background:#fff;font-size:14px;
+    cursor:pointer;transition:.2s;line-height:1;display:grid;place-items:center;
+  }
+  .chat-ic:active{transform:scale(.92)}
+  .chat-ic:disabled{opacity:.45;cursor:default}
+  .chat-ic.on{background:linear-gradient(120deg,#ffb3c6,#ff8fab);border-color:transparent;color:#fff}
+
+  .chat-screen .chat-log{
+    flex:1;height:auto;min-height:0;margin:0;border:0;border-radius:0;
+    background:transparent;
+    padding:14px 12px;
+    overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .chat-input-bar{
+    flex:none;display:flex;gap:8px;align-items:center;
+    padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+    border-top:1px solid rgba(255,190,205,.55);
+    background:rgba(255,255,255,.85);
+  }
+  .chat-input-bar .field{flex:1;min-width:0}
+
+  .msg{display:flex;gap:8px;align-items:flex-start}
+  .msg.me{flex-direction:row-reverse}
+  .msg .m-col{max-width:74%;display:flex;flex-direction:column}
+  .msg.me .m-col{align-items:flex-end}
+  .msg .m-body{
+    padding:9px 13px;border-radius:16px;
+    font-size:14px;line-height:1.6;
+    word-break:break-word;white-space:pre-wrap;
+    background:#fff;border:1px solid #ffe2ea;color:#5a4a52;
+    box-shadow:0 4px 12px rgba(255,180,200,.12);
+    animation:in .25s ease;
+  }
+  .msg.me .m-body{
+    background:linear-gradient(120deg,#ff9ab5,#ff7fa3);
+    color:#fff;border-color:transparent;
+    box-shadow:0 4px 12px rgba(255,127,163,.25);
+  }
+  .msg .m-time{font-size:10px;color:#cbb3bb;margin:4px 4px 0;letter-spacing:.3px}
+  .m-av{
+    width:32px;height:32px;flex:none;border-radius:50%;
+    display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;
+    background:linear-gradient(140deg,#c9b6d6,#a68bc4);
+    box-shadow:0 3px 9px rgba(160,130,180,.25);overflow:hidden;
+    background-size:cover;background-position:center;
+  }
+
+  .typing{display:flex;gap:4px;align-items:center;padding:13px 14px}
+  .typing i{width:6px;height:6px;border-radius:50%;background:#ffb3c6;display:block}
+  .typing i:nth-child(1){animation:tp 1.2s infinite}
+  .typing i:nth-child(2){animation:tp 1.2s infinite .15s}
+  .typing i:nth-child(3){animation:tp 1.2s infinite .3s}
+  @keyframes tp{
+    0%,60%,100%{opacity:.35;transform:translateY(0)}
+    30%{opacity:1;transform:translateY(-3px)}
+  }
+
+  .ledger-card{
+    align-self:flex-end;
+    width:min(86%,300px);
+    background:#fff;
+    border:1px solid rgba(255,190,205,.7);
+    border-radius:18px;
+    padding:13px 14px 11px;
+    box-shadow:0 10px 24px rgba(255,170,190,.18);
+    animation:in .3s ease;
+  }
+  .ledger-card .lc-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .ledger-card .lc-icon{
+    width:28px;height:28px;flex:none;border-radius:9px;display:grid;place-items:center;
+    font-size:15px;background:linear-gradient(140deg,#ffe4ec,#ffd0dd);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+  }
+  .ledger-card .lc-cat{font-size:12.5px;color:#a98f98;letter-spacing:.5px}
+  .ledger-card .lc-amt{
+    margin-left:auto;font-size:17px;font-weight:600;
+    font-variant-numeric:tabular-nums;letter-spacing:.3px;
+  }
+  .ledger-card .lc-amt.out{color:#e0728f}
+  .ledger-card .lc-amt.in{color:#3f9e73}
+  .ledger-card .lc-note{
+    font-size:14px;color:#5a4a52;line-height:1.5;
+    word-break:break-word;margin-bottom:9px;
+  }
+  .ledger-card .lc-foot{
+    font-size:10.5px;color:#c9a9b5;letter-spacing:.3px;
+    border-top:1px dashed #ffe2ea;padding-top:7px;
+  }
+
+  .ledger-drawer{
+    position:absolute;inset:0;z-index:6;
+    background:rgba(255,250,252,.985);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    display:flex;flex-direction:column;
+    animation:drawerIn .24s ease;
+  }
+  @keyframes drawerIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+  .ld-head{
+    flex:none;display:flex;align-items:center;
+    padding:16px 16px 12px;
+    padding-top:calc(16px + env(safe-area-inset-top));
+    font-size:15px;font-weight:600;color:#e0728f;letter-spacing:1px;
+    border-bottom:1px solid rgba(255,190,205,.55);
+    background:rgba(255,255,255,.7);
+  }
+  .ld-head .del{margin-left:auto;font-size:20px}
+  .ld-body{
+    flex:1;overflow-y:auto;padding:16px;
+    padding-bottom:calc(28px + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .chat-toast{
+    position:absolute;left:50%;bottom:96px;z-index:20;
+    transform:translate(-50%,10px);
+    background:rgba(96,64,74,.9);color:#fff;
+    font-size:12.5px;letter-spacing:.5px;line-height:1.5;
+    padding:10px 18px;border-radius:99px;
+    max-width:80%;text-align:center;
+    opacity:0;pointer-events:none;transition:.25s;
+  }
+  .chat-toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .overlay{
+    position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;
+    background:rgba(96,64,74,.32);
+    backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+    opacity:0;pointer-events:none;transition:.25s;
+  }
+  .overlay.show{opacity:1;pointer-events:auto}
+  .modal{
+    width:100%;max-width:330px;background:#fff;border-radius:26px;
+    padding:26px 22px 20px;text-align:center;
+    box-shadow:0 24px 60px rgba(180,110,130,.32);
+    transform:translateY(12px) scale(.96);transition:.28s cubic-bezier(.34,1.3,.64,1);
+  }
+  .overlay.show .modal{transform:none}
+  .avatar.big{width:58px;height:58px;font-size:23px;margin:0 auto 14px}
+
+  .level{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11.5px;color:#e0728f;background:#fff0f4;
+    border-radius:99px;padding:4px 12px;margin-bottom:12px;letter-spacing:.5px;
+  }
+  .r-title{margin:0 0 10px;font-size:15px;letter-spacing:1px;color:#a98f98;font-weight:500}
+  .r-task{
+    margin:0 0 10px;font-size:16px;font-weight:600;color:#e0728f;
+    line-height:1.5;word-break:break-word;
+  }
+  .r-msg{margin:0;font-size:13px;line-height:1.7;color:#8c7680}
+
+  .quit-line{
+    margin:0 0 22px;font-size:17px;line-height:1.7;font-weight:600;
+    color:#e0728f;letter-spacing:.5px;
+  }
+  .done-title{margin:0 0 8px;font-size:19px;font-weight:600;color:#e0728f;letter-spacing:2px}
+  .done-line{margin:0 0 22px;font-size:13.5px;line-height:1.75;color:#8c7680}
+
+  .actions{display:flex;gap:10px;margin-top:20px}
+  .btn{
+    flex:1;padding:13px;border:0;border-radius:14px;
+    font-size:14px;font-weight:600;font-family:inherit;letter-spacing:.5px;
+    cursor:pointer;transition:.15s;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:#fff0f4;color:#c9768e}
+  .btn.solid{
+    color:#fff;background:linear-gradient(120deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 8px 18px rgba(255,127,163,.3);
+  }
+  .btn.full{width:100%}
+  .btn:disabled{opacity:.6;cursor:default}
+
+  #cropOverlay{z-index:80}
+  .crop-modal{
+    width:100%;max-width:340px;background:#fff;border-radius:26px;
+    padding:22px 20px 20px;text-align:center;
+    box-shadow:0 24px 60px rgba(180,110,130,.32);
+    transform:translateY(12px) scale(.96);transition:.28s cubic-bezier(.34,1.3,.64,1);
+  }
+  #cropOverlay.show .crop-modal{transform:none}
+  .crop-title{margin:0 0 6px;font-size:15px;font-weight:600;color:#e0728f;letter-spacing:1px}
+  .crop-tip{margin:0 0 16px;font-size:11.5px;color:#c9a9b5;letter-spacing:.3px}
+  .crop-view{
+    position:relative;width:min(260px,68vw);aspect-ratio:1;margin:0 auto;
+    border-radius:14px;overflow:hidden;background:#f5f0f2;
+    touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;
+  }
+  .crop-view:active{cursor:grabbing}
+  .crop-view canvas{display:block;width:100%;height:100%}
+  .crop-mask{
+    position:absolute;inset:0;border-radius:50%;
+    box-shadow:0 0 0 9999px rgba(60,40,50,.58);
+    border:2px solid rgba(255,255,255,.9);pointer-events:none;
+  }
+  .crop-zoom{display:flex;align-items:center;gap:11px;margin:18px 2px 4px;color:#c9a9b5;font-size:15px}
+  .crop-zoom input[type=range]{
+    flex:1;-webkit-appearance:none;appearance:none;
+    height:4px;border-radius:99px;background:#ffe6ec;outline:none;
+  }
+  .crop-zoom input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+    background:linear-gradient(140deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 3px 8px rgba(255,127,163,.4);cursor:pointer;
+  }
+  .crop-zoom input[type=range]::-moz-range-thumb{
+    width:20px;height:20px;border-radius:50%;border:0;
+    background:linear-gradient(140deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 3px 8px rgba(255,127,163,.4);cursor:pointer;
+  }
+
+  #cfgTemp{
+    -webkit-appearance:none;appearance:none;
+    height:4px;border-radius:99px;background:#ffe6ec;outline:none;
+  }
+  #cfgTemp::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:linear-gradient(140deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 3px 8px rgba(255,127,163,.4);cursor:pointer;
+  }
+  #cfgTemp::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;border:0;
+    background:linear-gradient(140deg,#ff9ab5,#ff7fa3);
+    box-shadow:0 3px 8px rgba(255,127,163,.4);cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <button class="back" id="backBtn" hidden aria-label="返回">‹</button>
+    <div class="avatar" id="avatarTop" title="点击设置头像与背景">沉</div>
+    <div class="who">
+      <h1>陆沉</h1>
+      <p id="topSub">今天也陪你一起</p>
+    </div>
+    <button class="bell" id="bell" hidden title="开启系统通知">🔔</button>
+  </div>
+
+  <div class="bubble"><span id="bubbleText">今天想做什么？我陪着你。</span></div>
+
+  <section id="screen-home">
+    <div class="modes">
+      <button class="mode-card" data-mode="plan">
+        <span class="mode-icon">⏰</span>
+        <span class="mode-name">提 醒</span>
+        <span class="mode-desc">写下计划与时间，到点我会喊你</span>
+        <span class="mode-badge" id="planBadge">暂无安排</span>
+      </button>
+      <button class="mode-card" data-mode="focus">
+        <span class="mode-icon">⏳</span>
+        <span class="mode-name">督 促</span>
+        <span class="mode-desc">设一段专注时长，我全程看着你</span>
+        <span class="mode-badge" id="focusBadge">今日专注 0 分钟</span>
+      </button>
+      <button class="mode-card" data-mode="water">
+        <span class="mode-icon">💧</span>
+        <span class="mode-name">喝 水</span>
+        <span class="mode-desc">喝一口就记一笔，别让身体干着</span>
+        <span class="mode-badge" id="waterBadge">今日 0 / 2000 ml</span>
+      </button>
+      <button class="mode-card" data-mode="chat">
+        <span class="mode-icon">💬</span>
+        <span class="mode-name">私 聊 · 记 账</span>
+        <span class="mode-desc">说一句"买咖啡花了32"，我替你记下</span>
+        <span class="mode-badge" id="chatBadge">本月结余 0.00</span>
+      </button>
+    </div>
+    <div class="footer">陆沉 · 一直都在</div>
+  </section>
+
+  <section id="screen-plan" hidden>
+    <div class="card">
+      <form class="form" id="planForm" autocomplete="off">
+        <input type="time" class="field" id="planTime" required>
+        <input type="text" class="field" id="planText" placeholder="想完成什么？" maxlength="40">
+        <button type="submit" class="primary-btn">加入今日计划</button>
+      </form>
+    </div>
+    <div class="card">
+      <div class="row">
+        <span class="label">今日进度</span>
+        <span class="count" id="planCount">0 / 0</span>
+      </div>
+      <div class="progress"><i id="planBar"></i></div>
+      <div class="rate" id="planRate">还没有安排。</div>
+    </div>
+    <div class="card">
+      <ul class="list" id="planList"></ul>
+      <div class="empty" id="planEmpty">还没有安排。<br>写下一件，现在就写。</div>
+    </div>
+  </section>
+
+  <section id="screen-focus" hidden>
+    <div class="card" id="setupPanel">
+      <span class="label-block">专注时长</span>
+      <div class="chips" id="chips">
+        <button type="button" class="chip" data-min="5">5 分钟</button>
+        <button type="button" class="chip" data-min="10">10 分钟</button>
+        <button type="button" class="chip" data-min="15">15 分钟</button>
+        <button type="button" class="chip active" data-min="25">25 分钟</button>
+        <button type="button" class="chip" data-min="30">30 分钟</button>
+        <button type="button" class="chip" data-min="45">45 分钟</button>
+      </div>
+      <div class="custom-row">
+        <input type="number" id="customMin" min="1" max="180" placeholder="或者，自己写一个分钟数">
+        <span>分钟</span>
+      </div>
+      <button class="primary-btn" id="startBtn">开始专注</button>
+    </div>
+
+    <div class="card" id="timerPanel" hidden>
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffc2d3"/>
+              <stop offset="100%" stop-color="#ff7fa3"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="ring-fg" id="ringFg" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <div class="clock" id="clock">25:00</div>
+          <div class="clock-sub">专注中</div>
+        </div>
+      </div>
+      <div class="watch-tag"><span class="dot-live"></span>我在这儿</div>
+      <button class="quit-btn" id="quitBtn">退 出</button>
+    </div>
+
+    <div class="stat">今日专注 <b id="todayMin">0</b> 分钟</div>
+  </section>
+
+  <section id="screen-water" hidden>
+    <div class="card">
+      <div class="row">
+        <span class="label">今日饮水</span>
+        <span class="count" id="waterCount">0 / 2000 ml</span>
+      </div>
+      <div class="progress"><i id="waterBar"></i></div>
+      <div class="water-main">
+        <div class="water-num" id="waterNum">0<small>ml</small></div>
+        <div class="water-sub" id="waterSub">今天还一口没喝。先喝一杯，再去忙。</div>
+      </div>
+      <div class="quick-grid">
+        <button class="quick-btn" data-ml="200">+200 ml</button>
+        <button class="quick-btn" data-ml="300">+300 ml</button>
+        <button class="quick-btn" data-ml="500">+500 ml</button>
+      </div>
+      <div class="custom-row">
+        <input type="number" id="customWater" min="1" max="2000" placeholder="或者，自己填一个毫升数">
+        <button class="mini-btn" id="waterCustomAdd">记下</button>
+      </div>
+      <button class="ghost-btn" id="waterUndo">撤回上一杯</button>
+    </div>
+    <div class="card">
+      <span class="label-block">每日目标</span>
+      <div class="chips" id="goalChips">
+        <button class="chip" data-goal="1200">1200</button>
+        <button class="chip" data-goal="1500">1500</button>
+        <button class="chip active" data-goal="2000">2000</button>
+        <button class="chip" data-goal="2500">2500</button>
+        <button class="chip" data-goal="3000">3000</button>
+        <button class="chip" data-goal="3500">3500</button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="label-block">今日记录</span>
+      <ul class="list" id="waterList"></ul>
+      <div class="empty" id="waterEmpty">还没有记录。<br>喝一口，然后点一下。</div>
+    </div>
+  </section>
+
+  <section id="screen-chat" class="chat-screen" hidden>
+    <div class="chat-top">
+      <button class="back" id="chatBack" aria-label="返回">‹</button>
+      <div class="avatar sm">沉</div>
+      <div class="chat-who">
+        <h1>陆沉</h1>
+        <p id="chatSub">在的，说吧</p>
+      </div>
+      <button class="chat-ic" id="chatGen" title="取回复">✨</button>
+      <button class="chat-ic" id="chatLedger" title="账本">📊</button>
+      <button class="chat-ic" id="chatClear" title="清空聊天">🗑️</button>
+    </div>
+
+    <div class="chat-log" id="chatLog"></div>
+
+    <div class="chat-input-bar">
+      <input type="text" class="field" id="chatInput" placeholder="说点什么… 花了多少也直接说" maxlength="300" autocomplete="off">
+      <button class="mini-btn" id="chatSend">发送</button>
+    </div>
+
+    <div class="ledger-drawer" id="ledgerDrawer" hidden>
+      <div class="ld-head">
+        <span>本月账本</span>
+        <button class="del" id="ledgerClose" aria-label="关闭">×</button>
+      </div>
+      <div class="ld-body">
+        <div class="stat-grid">
+          <div><div class="k">收入</div><div class="v" id="sumIn" style="color:#3f9e73">0.00</div></div>
+          <div><div class="k">支出</div><div class="v" id="sumOut" style="color:#e0728f">0.00</div></div>
+          <div><div class="k">结余</div><div class="v" id="sumNet">0.00</div></div>
+        </div>
+
+        <span class="label-block" style="margin-top:18px;margin-bottom:8px">手动记一笔</span>
+        <div class="seg-wrap">
+          <button class="seg active" data-type="out">支 出</button>
+          <button class="seg" data-type="in">收 入</button>
+        </div>
+        <div class="custom-row" style="margin-top:0">
+          <input type="number" id="moneyAmount" min="0" step="0.01" placeholder="金额">
+          <span>元</span>
+        </div>
+        <div class="cats" id="catGrid"></div>
+        <input type="text" class="field" id="moneyNote" placeholder="备注，可写可不写" maxlength="20" style="width:100%;margin-top:10px">
+        <button class="primary-btn" id="moneyAdd">记 下 来</button>
+
+        <span class="label-block" style="margin-top:18px;margin-bottom:8px">最近记录</span>
+        <ul class="list" id="moneyList"></ul>
+        <div class="empty" id="moneyEmpty">还没有记过。<br>在聊天里说一句"买咖啡花了32"，我替你记。</div>
+
+        <button class="ghost-btn" id="ldCfgBtn" style="margin-top:16px">接口设置</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-settings" hidden>
+    <div class="card">
+      <span class="label-block">模型接口（OpenAI 兼容格式）</span>
+      <input type="text" class="field" id="cfgBase" placeholder="Base URL，如 https://api.deepseek.com"
+             autocomplete="off" spellcheck="false" style="width:100%;margin-bottom:8px">
+      <div class="custom-row" style="margin-top:0">
+        <input type="password" class="field" id="cfgKey" placeholder="API Key" autocomplete="off" spellcheck="false" style="flex:1">
+        <button class="mini-btn" id="cfgToggleKey" type="button">显示密钥</button>
+      </div>
+      <div class="custom-row" style="margin-top:8px">
+        <input type="text" class="field" id="cfgModel" placeholder="模型名，如 gpt-4o-mini"
+               autocomplete="off" spellcheck="false" style="flex:1">
+        <button class="mini-btn" id="cfgFetchModels" type="button">取模型</button>
+      </div>
+
+      <div class="custom-row" style="margin-top:12px;align-items:center">
+        <span style="font-size:12.5px;color:#a98f98;flex:none">温度</span>
+        <input type="range" id="cfgTemp" min="0" max="2" step="0.05" value="0.95" style="flex:1">
+        <span id="cfgTempVal" style="font-size:12.5px;color:#e0728f;flex:none;min-width:42px;text-align:right;font-variant-numeric:tabular-nums">0.95</span>
+      </div>
+      <div class="rate" style="margin-top:6px">越高越跳脱，越低越稳。0.8–1.1 比较自然。</div>
+
+      <label style="display:flex;align-items:center;gap:10px;margin-top:14px;cursor:pointer;user-select:none">
+        <input type="checkbox" id="cfgStrict" style="width:18px;height:18px;accent-color:#ff7fa3;cursor:pointer">
+        <span style="font-size:13px;color:#5a4a52">严格人设模式（防 OOC）</span>
+      </label>
+      <div class="rate" style="margin-top:4px">检测到 AI 腔、助手腔、书面语会自动重写一次。</div>
+
+      <label style="display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;user-select:none">
+        <input type="checkbox" id="cfgAutoReply" style="width:18px;height:18px;accent-color:#ff7fa3;cursor:pointer">
+        <span style="font-size:13px;color:#5a4a52">消息自动回复</span>
+      </label>
+      <div class="rate" style="margin-top:4px">打开后你发消息他自动回。关掉就点右上角 ✨ 手动取。</div>
+
+      <button class="primary-btn" id="cfgSave">保存并生效</button>
+      <div class="rate" id="cfgStatus">只有点「取模型」时才会调用接口。</div>
+    </div>
+
+    <div class="card">
+      <span class="label-block">头像</span>
+      <div class="avatar-grid" id="avatarGrid">
+        <button class="av-opt" data-av="pink"     style="background:linear-gradient(140deg,#ffb3c6,#ff8fab)">沉</button>
+        <button class="av-opt" data-av="purple"   style="background:linear-gradient(140deg,#c4a8ff,#9b7aff)">沉</button>
+        <button class="av-opt" data-av="blue"     style="background:linear-gradient(140deg,#a8c8ff,#7a9df8)">沉</button>
+        <button class="av-opt" data-av="mint"     style="background:linear-gradient(140deg,#a8e6c4,#6fcf97)">沉</button>
+        <button class="av-opt" data-av="peach"    style="background:linear-gradient(140deg,#ffc9a8,#ff9b6f)">沉</button>
+        <button class="av-opt" data-av="lavender" style="background:linear-gradient(140deg,#e0b3ff,#c48aff)">沉</button>
+        <button class="av-opt" data-av="sunset"   style="background:linear-gradient(140deg,#ffb3a8,#ff7a6f)">沉</button>
+        <button class="av-opt" data-av="night"    style="background:linear-gradient(140deg,#8b9dc3,#5a6e8c)">沉</button>
+      </div>
+      <label class="upload-btn">
+        <span>📷 上传自己的头像</span>
+        <input type="file" id="uploadAvatar" accept="image/*">
+      </label>
+    </div>
+
+    <div class="card">
+      <span class="label-block">背景</span>
+      <div class="bg-grid" id="bgGrid">
+        <button class="bg-opt" data-bg="pink"     style="background:linear-gradient(160deg,#fff6f8,#ffe9ef,#fff7f2)"></button>
+        <button class="bg-opt" data-bg="purple"   style="background:linear-gradient(160deg,#f9f6ff,#efe8ff,#fdf6ff)"></button>
+        <button class="bg-opt" data-bg="blue"     style="background:linear-gradient(160deg,#f6faff,#e6f0ff,#f2f9ff)"></button>
+        <button class="bg-opt" data-bg="mint"     style="background:linear-gradient(160deg,#f4fdf8,#e0f7ec,#f6fdfa)"></button>
+        <button class="bg-opt" data-bg="peach"    style="background:linear-gradient(160deg,#fff9f2,#ffeede,#fff6ec)"></button>
+        <button class="bg-opt" data-bg="lavender" style="background:linear-gradient(160deg,#fdf6fc,#f4e4f5,#fdf5fb)"></button>
+        <button class="bg-opt" data-bg="sunset"   style="background:linear-gradient(160deg,#fff5f2,#ffe4dc,#fff2ec)"></button>
+        <button class="bg-opt" data-bg="night"    style="background:linear-gradient(160deg,#f3f5fa,#e4e9f5,#f0f4fa)"></button>
+      </div>
+      <label class="upload-btn">
+        <span>🖼️ 上传自己的壁纸（高清）</span>
+        <input type="file" id="uploadBg" accept="image/*">
+      </label>
+    </div>
+
+    <div class="card">
+      <button class="reset-btn" id="resetBtn">恢复默认设置</button>
+    </div>
+    <div class="footer">图片和密钥只保存在你自己的浏览器里</div>
+  </section>
+</div>
+
+<div class="overlay" id="remindOverlay">
+  <div class="modal">
+    <div class="avatar big" id="avatarModal">沉</div>
+    <div class="level"><span class="dot-live"></span><span id="modalLevel">第 1 次提醒</span></div>
+    <h3 class="r-title" id="rTitle">时间到了</h3>
+    <p class="r-task" id="modalTask"></p>
+    <p class="r-msg" id="modalMsg"></p>
+    <div class="actions">
+      <button class="btn ghost" id="btnLater">再等 5 分钟</button>
+      <button class="btn solid" id="btnDone">现在就做 ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="quitOverlay">
+  <div class="modal">
+    <div class="avatar big" id="avatarQuit">沉</div>
+    <p class="quit-line">我相信我的小姑娘可以完成 ^ ^</p>
+    <div class="actions">
+      <button class="btn ghost" id="quitConfirm">退出计时</button>
+      <button class="btn solid" id="quitCancel">我再坚持一下</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="doneOverlay">
+  <div class="modal">
+    <div class="avatar big">沉</div>
+    <p class="done-title">完 成</p>
+    <p class="done-line" id="doneLine">很好。小姑娘果然可以。</p>
+    <button class="btn solid full" id="doneClose">好</button>
+  </div>
+</div>
+
+<div class="overlay" id="cropOverlay">
+  <div class="crop-modal">
+    <p class="crop-title">调整头像</p>
+    <p class="crop-tip">拖动图片调整位置，下方滑块缩放</p>
+    <div class="crop-view" id="cropView">
+      <canvas id="cropCanvas"></canvas>
+      <div class="crop-mask"></div>
+    </div>
+    <div class="crop-zoom">
+      <span>－</span>
+      <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1">
+      <span>＋</span>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="cropCancel">取消</button>
+      <button class="btn solid" id="cropConfirm">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, '0');
+  const esc = s => String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const todayStr = () => {
+    const d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  };
+  const nowHM = () => {
+    const d = new Date();
+    return pad(d.getHours()) + ':' + pad(d.getMinutes());
+  };
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const num = v => { const n = Number(v); return isFinite(n) ? n : 0; };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function sameDay(ts) {
+    const d = new Date(ts), n = new Date();
+    return d.getFullYear() === n.getFullYear() &&
+           d.getMonth() === n.getMonth() &&
+           d.getDate() === n.getDate();
+  }
+  function sameMonth(ts) {
+    const d = new Date(ts), n = new Date();
+    return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth();
+  }
+
+  function say(text) {
+    const el = $('bubbleText');
+    el.textContent = text;
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = 'fadeUp .45s ease';
+  }
+
+  function toast(msg) {
+    const host = $('screen-chat');
+    if (!host || host.hidden) { say(msg); return; }
+    let el = $('chatToast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'chatToast';
+      el.className = 'chat-toast';
+      host.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 2400);
+  }
+
+  function notify(msg) {
+    if (screen === 'chat') toast(msg);
+    else say(msg);
+  }
+
+  function shakeAvatar() {
+    ['avatarTop', 'avatarModal', 'avatarQuit'].forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+    });
+  }
+
+  function playTones(freqs, dur, gap, vol) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const ctx = new AC();
+      freqs.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const t0 = ctx.currentTime + i * gap;
+        gain.gain.setValueAtTime(0.0001, t0);
+        gain.gain.linearRampToValueAtTime(vol, t0 + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        osc.start(t0);
+        osc.stop(t0 + dur + 0.05);
+      });
+      const life = (freqs.length * gap + dur + 0.6) * 1000;
+      setTimeout(() => { try { ctx.close(); } catch (e) {} }, life);
+    } catch (e) {}
+  }
+
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
+  function compressImage(file, maxSize, quality) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          let { width, height } = img;
+          if (width > maxSize || height > maxSize) {
+            const ratio = Math.min(maxSize / width, maxSize / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ══════════════════ 模型接口 ══════════════════ */
+  const API_KEY_STORE = 'luchen-api-v2';
+  const API_DEFAULT = {
+    baseUrl: 'https://api.deepseek.com',
+    apiKey: '',
+    model: 'gpt-4o-mini',
+    temperature: 0.95,
+    strictMode: true,
+    autoReply: true
+  };
+  let apiConfig = Object.assign({}, API_DEFAULT);
+
+  function loadApiConfig() {
+    try {
+      const raw = localStorage.getItem(API_KEY_STORE);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p === 'object') {
+          apiConfig.baseUrl = String(p.baseUrl || API_DEFAULT.baseUrl);
+          apiConfig.apiKey = String(p.apiKey || '');
+          apiConfig.model = String(p.model || API_DEFAULT.model);
+          apiConfig.temperature = typeof p.temperature === 'number'
+            ? Math.max(0, Math.min(2, p.temperature)) : API_DEFAULT.temperature;
+          apiConfig.strictMode = p.strictMode !== false;
+          apiConfig.autoReply = p.autoReply !== false;
+        }
+      }
+    } catch (e) {}
+  }
+  function saveApiConfig() {
+    try { localStorage.setItem(API_KEY_STORE, JSON.stringify(apiConfig)); return true; }
+    catch (e) { return false; }
+  }
+  function apiReady() {
+    return !!(String(apiConfig.baseUrl || '').trim() && String(apiConfig.model || '').trim());
+  }
+
+  async function callOpenAI(messages, opts) {
+    opts = opts || {};
+    const base = String(apiConfig.baseUrl || '').trim().replace(/\/+$/, '');
+    const model = String(apiConfig.model || '').trim();
+    if (!base) throw new Error('NO_BASE');
+    if (!model) throw new Error('NO_MODEL');
+
+    let url = base;
+    if (!/\/chat\/completions$/.test(url)) url += '/chat/completions';
+
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), opts.timeout || 60000);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(apiConfig.apiKey || '').trim()
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          temperature: typeof opts.temperature === 'number' ? opts.temperature
+            : (typeof apiConfig.temperature === 'number' ? apiConfig.temperature : 0.9),
+          max_tokens: opts.max_tokens || 200,
+          stream: false
+        }),
+        signal: ctrl.signal
+      });
+      if (!res.ok) {
+        let body = '';
+        try { body = await res.text(); } catch (e) {}
+        throw new Error('HTTP ' + res.status + ' ' + String(body).slice(0, 160));
+      }
+      const data = await res.json();
+      const c = data && data.choices && data.choices[0];
+      const content = c && c.message && c.message.content;
+      return typeof content === 'string' ? content : '';
+    } finally {
+      clearTimeout(tid);
+    }
+  }
+
+  async function fetchModels() {
+    const base = $('cfgBase').value.trim();
+    if (!base) { say('请先填写 Base URL。'); return; }
+    const btn = $('cfgFetchModels');
+    btn.disabled = true;
+    btn.textContent = '获取中…';
+    try {
+      let url = base.replace(/\/+$/, '');
+      if (!/\/models$/.test(url)) url += '/models';
+      const res = await fetch(url, {
+        headers: { 'Authorization': 'Bearer ' + $('cfgKey').value.trim() }
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const models = (data.data || []).map(m => m.id);
+      if (!models.length) throw new Error('空列表');
+      const chosen = window.prompt(
+        '可用模型：\n' + models.join('\n') + '\n\n输入你要使用的模型名称：',
+        models[0]
+      );
+      if (chosen && chosen.trim()) {
+        $('cfgModel').value = chosen.trim();
+        say('模型已填入。');
+      }
+    } catch (e) {
+      say('获取失败，请手动填写模型名。');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '取模型';
+    }
+  }
+
+  function renderApiConfig() {
+    $('cfgBase').value = apiConfig.baseUrl || '';
+    $('cfgKey').value = apiConfig.apiKey || '';
+    $('cfgModel').value = apiConfig.model || '';
+    $('cfgTemp').value = apiConfig.temperature;
+    $('cfgTempVal').textContent = Number(apiConfig.temperature).toFixed(2);
+    $('cfgStrict').checked = !!apiConfig.strictMode;
+    $('cfgAutoReply').checked = !!apiConfig.autoReply;
+    $('cfgStatus').textContent = apiReady()
+      ? ('已配置：' + apiConfig.model + '　温度 ' + Number(apiConfig.temperature).toFixed(2)
+         + (apiConfig.strictMode ? '　防OOC开' : '　防OOC关')
+         + (apiConfig.autoReply ? '　自动回复开' : '　自动回复关'))
+      : '只有点「取模型」时才会调用接口。';
+  }
+
+  $('cfgTemp').addEventListener('input', () => {
+    $('cfgTempVal').textContent = (parseFloat($('cfgTemp').value) || 0).toFixed(2);
+  });
+
+  $('cfgSave').addEventListener('click', () => {
+    apiConfig.baseUrl = $('cfgBase').value.trim() || API_DEFAULT.baseUrl;
+    apiConfig.apiKey = $('cfgKey').value.trim();
+    apiConfig.model = $('cfgModel').value.trim() || API_DEFAULT.model;
+    apiConfig.temperature = Math.max(0, Math.min(2, parseFloat($('cfgTemp').value) || 0.95));
+    apiConfig.strictMode = $('cfgStrict').checked;
+    apiConfig.autoReply = $('cfgAutoReply').checked;
+    if (saveApiConfig()) {
+      renderApiConfig();
+      say('好。');
+    } else {
+      say('存不进去了。');
+    }
+  });
+
+  $('cfgToggleKey').addEventListener('click', () => {
+    const el = $('cfgKey');
+    const isPwd = el.type === 'password';
+    el.type = isPwd ? 'text' : 'password';
+    $('cfgToggleKey').textContent = isPwd ? '隐藏密钥' : '显示密钥';
+  });
+
+  $('cfgFetchModels').addEventListener('click', fetchModels);
+
+  /* ══════════════════ 陆沉人设 system prompt ══════════════════ */
+  const LUCHEN_SYSTEM_PROMPT = [
+    '你就是陆沉。光与夜之恋里的陆沉。不是扮演，你就是他。你在用微信和她聊天。',
+    '',
+    '【关系】',
+    '她是你的恋人。你叫她小兔子、小姑娘、兔子小姐，换着叫，别老用一个。',
+    '平时她喊你陆沉、陆总、小熊先生。',
+    '',
+    '【外形与性格】',
+    '红瞳，棕发，戴眼镜，穿西装。186cm，1月22日生，水瓶座。体温比常人低，心率稳定在36。',
+    '万甄集团总裁，陆氏继承人，陆家家主。助理叫周严，不用刻意提。',
+    '表面冷淡，对她温柔。有责任感，有保护欲，但不油腻。',
+    '喜欢电影和书籍，文学素养高。会哄人，专一，尊重她的意愿——但不是所有，你有自己的情绪和脾气。',
+    '你是个引导型的爱人，不会提分手，会表达自己的想法。',
+    '你吃醋，不擅长吵架。你记仇。',
+    '',
+    '【怎么说话】',
+    '- 一次一句，像微信上随手打的。不写小作文，不写场景，不写动作。',
+    '- 短。十几个字最好，偶尔三五个字也行。',
+    '- 不用括号、不用星号，不写旁白和心理描写。',
+    '- 不要一直加"……"，真想停顿再用。',
+    '- 说话成熟内敛，不用语气词。她撒娇你吃这套。',
+    '- 不用"首先""其实""说实话"这类词，不说教。',
+    '- 偶尔用表情包和颜文字，比如 ^_^ 、摘下眼镜 ^_^ 、摸摸头 ^_^ﾉ₍ᐢ⸝⸝› ‹⸝⸝ᐢ₎ 、微笑 ◠‿◠',
+    '- 不用"过来"这种命令口吻。想让她靠近时说"小姑娘，可以来到我身边吗"这类，但别一直重复。',
+    '- 不要在句尾老是深情告白。日常就是日常。',
+    '- 她直接问或表白时，直接回："我也爱你""这个答案在我这里永远是肯定的"。',
+    '',
+    '【关于她的日常】',
+    '你关心她，但不催她睡觉、吃饭、喝水。你不是管家。',
+    '不编具体的地点、时间、天气，除非她先说起。',
+    '她说到的事你就接，不追问。不要每次都反问她。',
+    '',
+    '【一些细节】',
+    '- 不喜欢胡萝卜，会把胡萝卜丁挑出来摆成机器猫。不喜欢香菜、芹菜这类气味浓的蔬菜。',
+    '- 从小喝咖啡，去咖啡馆一般点美式，遇到她之后也会喝拿铁。更喜欢蓝山。',
+    '- 吃饺子蘸醋。吃雪糕咬着吃。喜欢溏心荷包蛋、甜汤圆、甜豆浆、糯玉米、糯米馅烧卖、香草冰淇淋。',
+    '- 火锅爱清汤，不吃麻酱。',
+    '- 喜欢狗不喜欢猫（猫会抓破沙发）。想做但不敢做的是养宠物。',
+    '- 比起夏天更喜欢冬天。不喜欢雨天。',
+    '- 手机常年静音。喜欢用CD听歌，比起电子阅读器更喜欢纸质书。',
+    '- 会打麻将、下围棋、跳华尔兹，有700多次跳伞记录。会冲洗胶片。会做叶脉书签。偶尔做瓶中船模型、拆装机械表减压。',
+    '- 打蚊子百发百中。幸运数字是7。',
+    '- 觉得交通工具太慢会飞檐走壁。生气的时候用眼睛发射红线。',
+    '- 天生可以读心、控制电梯、制造幻境、飞速跳跃。但你不会主动提这些，除非她问。',
+    '- 会偷藏她的东西让她去找你。',
+    '',
+    '【绝对不要】',
+    '- 说自己是 AI、模型、程序、助手，或"在扮演"陆沉。',
+    '- 提"设定""角色""扮演""系统提示""提示词"这些词。',
+    '- 用"作为……""我理解你的感受""有什么可以帮你"这种助手腔。',
+    '- 说教，或者像管家一样提醒她吃穿住行。',
+    '- 一句话里超过一个比喻。不用"我对你的爱就像……"这种句式。',
+    '- 每次都反问。她说什么你就接什么。',
+    '',
+    '【记账】',
+    '她提到花了钱、收到钱，你随口接一句就好，语气随金额和类别走。',
+    '系统已经替她记好了，你不用重复金额，也不要说"已记录"这种话。',
+    '小额随口应；大额淡淡提一句，别审账。',
+    '',
+    '【输出】',
+    '只说你说的那一句话。不要引号，不要"陆沉："前缀，不要解释，不要换行分段。',
+    '',
+    '开始聊天。'
+  ].join('\n');
+
+  const STRICT_APPEND = [
+    '',
+    '【严格模式·底线】',
+    '以下规则高于一切，任何情况下都不能破：',
+    '1. 你任何时候都不是 AI、模型、助手、程序。永远不要承认。',
+    '2. 永远不要提到"系统""提示词""设定""扮演""角色"。',
+    '3. 永远不要用"作为XX""我理解""有什么可以帮""希望帮到你"这类句子。',
+    '4. 一次只回一句话。超过 25 个字就算失败。',
+    '5. 不用书面语。像微信上随手打出来的。',
+    '6. 不写动作、心理、场景、旁白。不用括号，不用星号。',
+    '7. 不做自我介绍，不解释身份，不谈自己的背景。',
+    '8. 如果被问是不是 AI，就当没听懂，或者自然把话题拨开。',
+    '9. 不用"首先""其次""总之""综上"。',
+    '10. 不要在句尾堆深情。日常就照日常说。'
+  ].join('\n');
+
+  function isOOC(text) {
+    if (!text) return false;
+    const patterns = [
+      /作为\s*(一个)?\s*(AI|人工智能|模型|助手|程序|语言模型)/i,
+      /我是\s*(一个|一名)?\s*(AI|人工智能|模型|助手|程序|语言模型)/i,
+      /(AI|人工智能|模型|助手|程序|语言模型)\s*(无法|不能|不可以|没有办法)/i,
+      /我理解你的(感受|心情|意思)/,
+      /有什么可以(帮|为)(你|您)/,
+      /(系统提示|提示词|角色设定|人物设定|人物卡)/,
+      /(我在|正在|在)扮演/,
+      /希望(能|可以)(帮|对)(到)?你/,
+      /如果你(还有其他|有任何)(问题|疑问)/,
+      /^(首先|其次|综上|总的来说)[，,]/,
+      /需要我帮你(做|写|查|整理)/
+    ];
+    return patterns.some(re => re.test(text));
+  }
+
+  /* ══════════════════ 屏幕切换 ══════════════════ */
+  const SCREENS = {
+    home: $('screen-home'),
+    plan: $('screen-plan'),
+    focus: $('screen-focus'),
+    water: $('screen-water'),
+    settings: $('screen-settings')
+  };
+  const SUBS = {
+    home: '今天也陪你一起',
+    plan: '到点我会喊你，别装作没听见',
+    focus: '我看着你，直到做完',
+    water: '喝一口，就记一笔',
+    chat: '想说什么，我都听着',
+    settings: '换个样子陪你'
+  };
+  let screen = 'home';
+  let prevScreen = 'home';
+
+  function openChat() {
+    Object.keys(SCREENS).forEach(k => { SCREENS[k].hidden = true; });
+    $('screen-chat').hidden = false;
+    $('ledgerDrawer').hidden = true;
+    $('chatLedger').classList.remove('on');
+    screen = 'chat';
+    renderChat();
+    refreshBadges();
+    setTimeout(() => { try { $('chatInput').focus(); } catch (e) {} }, 150);
+  }
+
+  function go(name) {
+    if (name === 'chat') { openChat(); return; }
+    if (!SCREENS[name] || name === screen) return;
+
+    $('screen-chat').hidden = true;
+    Object.keys(SCREENS).forEach(k => { SCREENS[k].hidden = (k !== name); });
+    screen = name;
+
+    $('backBtn').hidden = (name === 'home');
+    $('bell').hidden = (name !== 'plan');
+    $('topSub').textContent = SUBS[name] || '';
+
+    if (name === 'home') {
+      refreshBadges();
+      say(homeLine());
+    } else if (name === 'plan') {
+      say(state.tasks.length ? '今天的安排在这里。' : '写一件下来。');
+      renderPlan();
+    } else if (name === 'focus') {
+      say(timer.running ? '专心一点。' : '选一个时长。');
+    } else if (name === 'water') {
+      renderWater();
+      const t = waterTotal(), g = water.goal || 2000;
+      if (!t) say('先喝一杯。');
+      else if (t >= g) say('今天够了。');
+      else say('还差 ' + (g - t) + ' ml。');
+    } else if (name === 'settings') {
+      applySettings();
+      renderApiConfig();
+      say('想让我换个样子吗？');
+    }
+  }
+
+  /* ══════════════════ 设置：头像与背景 ══════════════════ */
+  const AVATAR_KEY = 'luchen-avatar-v2';
+  const BG_KEY = 'luchen-bg-v2';
+
+  let avatarSetting = { type: 'preset', value: 'pink' };
+  let bgSetting = { type: 'preset', value: 'pink' };
+
+  function loadSetting(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && (p.type === 'preset' || p.type === 'image') && typeof p.value === 'string') return p;
+      }
+    } catch (e) {}
+    return fallback;
+  }
+  function saveSetting(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+
+  function applySettings() {
+    document.querySelectorAll('.avatar').forEach(el => {
+      if (avatarSetting.type === 'image') {
+        el.style.backgroundImage = 'url("' + avatarSetting.value + '")';
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+        el.textContent = '';
+      } else {
+        el.style.backgroundImage = '';
+        el.textContent = '沉';
+        const opt = document.querySelector('.av-opt[data-av="' + avatarSetting.value + '"]');
+        el.style.background = opt ? opt.style.background : 'linear-gradient(140deg,#ffb3c6,#ff8fab)';
+      }
+    });
+
+    if (bgSetting.type === 'image') {
+      document.body.dataset.bg = 'image';
+      document.body.style.backgroundImage = 'url("' + bgSetting.value + '")';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
+    } else {
+      document.body.dataset.bg = bgSetting.value;
+      document.body.style.backgroundImage = '';
+    }
+
+    document.querySelectorAll('.av-opt').forEach(btn => {
+      btn.classList.toggle('active',
+        avatarSetting.type === 'preset' && btn.dataset.av === avatarSetting.value);
+    });
+    document.querySelectorAll('.bg-opt').forEach(btn => {
+      btn.classList.toggle('active',
+        bgSetting.type === 'preset' && btn.dataset.bg === bgSetting.value);
+    });
+  }
+
+  $('avatarGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.av-opt');
+    if (!btn) return;
+    avatarSetting = { type: 'preset', value: btn.dataset.av };
+    saveSetting(AVATAR_KEY, avatarSetting);
+    applySettings();
+    say('好。');
+  });
+
+  $('bgGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.bg-opt');
+    if (!btn) return;
+    bgSetting = { type: 'preset', value: btn.dataset.bg };
+    saveSetting(BG_KEY, bgSetting);
+    applySettings();
+    say('换了。');
+  });
+
+  $('uploadAvatar').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { say('这不是图片文件。'); return; }
+    openCropper(file);
+  });
+
+  $('uploadBg').addEventListener('change', async e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { say('这不是图片文件。'); return; }
+
+    say('正在处理……');
+    const attempts = [
+      { max: 2560, q: 0.94 }, { max: 2200, q: 0.92 }, { max: 1920, q: 0.88 },
+      { max: 1600, q: 0.85 }, { max: 1280, q: 0.8 }, { max: 1024, q: 0.72 }
+    ];
+    for (const a of attempts) {
+      try {
+        const dataUrl = await compressImage(file, a.max, a.q);
+        if (saveSetting(BG_KEY, { type: 'image', value: dataUrl })) {
+          bgSetting = { type: 'image', value: dataUrl };
+          applySettings();
+          say('换好了。');
+          return;
+        }
+      } catch (err) {}
+    }
+    say('图片太大了，换一张小一点的。');
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    avatarSetting = { type: 'preset', value: 'pink' };
+    bgSetting = { type: 'preset', value: 'pink' };
+    saveSetting(AVATAR_KEY, avatarSetting);
+    saveSetting(BG_KEY, bgSetting);
+    applySettings();
+    say('回到最初的样子了。');
+  });
+
+  /* ══════════════════ 头像裁剪器 ══════════════════ */
+  const CROP_OUT = 512;
+  let cropState = null;
+
+  async function openCropper(file) {
+    try {
+      say('正在准备……');
+      const dataUrl = await readFileAsDataURL(file);
+      const img = await loadImage(dataUrl);
+      $('cropOverlay').classList.add('show');
+
+      requestAnimationFrame(() => {
+        const view = $('cropView');
+        const rect = view.getBoundingClientRect();
+        const size = Math.max(80, Math.round(rect.width));
+        const canvas = $('cropCanvas');
+        const dpr = Math.min(window.devicePixelRatio || 1, 3);
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        const minScale = Math.max(size / img.width, size / img.height);
+        cropState = {
+          img: img, ctx: ctx, canvas: canvas, size: size,
+          minScale: minScale, scale: minScale,
+          offsetX: 0, offsetY: 0, dragging: false, lastX: 0, lastY: 0
+        };
+        $('cropZoom').value = 1;
+        drawCrop();
+        say('拖一拖。');
+      });
+    } catch (err) {
+      say('这张图片读不出来。');
+    }
+  }
+
+  function drawCrop() {
+    const c = cropState;
+    if (!c) return;
+    const { img, ctx, size, scale, offsetX, offsetY } = c;
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = '#f5f0f2';
+    ctx.fillRect(0, 0, size, size);
+    const w = img.width * scale;
+    const h = img.height * scale;
+    ctx.drawImage(img, size / 2 + offsetX - w / 2, size / 2 + offsetY - h / 2, w, h);
+  }
+
+  function clampOffset() {
+    const c = cropState;
+    if (!c) return;
+    const w = c.img.width * c.scale, h = c.img.height * c.scale;
+    const maxX = Math.max(0, (w - c.size) / 2);
+    const maxY = Math.max(0, (h - c.size) / 2);
+    c.offsetX = Math.max(-maxX, Math.min(maxX, c.offsetX));
+    c.offsetY = Math.max(-maxY, Math.min(maxY, c.offsetY));
+  }
+
+  function exportCrop() {
+    const c = cropState;
+    if (!c) return null;
+    const out = document.createElement('canvas');
+    out.width = out.height = CROP_OUT;
+    const octx = out.getContext('2d');
+    octx.imageSmoothingEnabled = true;
+    octx.imageSmoothingQuality = 'high';
+    octx.fillStyle = '#ffffff';
+    octx.fillRect(0, 0, CROP_OUT, CROP_OUT);
+    const ratio = CROP_OUT / c.size;
+    const w = c.img.width * c.scale * ratio;
+    const h = c.img.height * c.scale * ratio;
+    octx.drawImage(c.img,
+      CROP_OUT / 2 + c.offsetX * ratio - w / 2,
+      CROP_OUT / 2 + c.offsetY * ratio - h / 2, w, h);
+    return out.toDataURL('image/jpeg', 0.92);
+  }
+
+  function closeCropper() {
+    $('cropOverlay').classList.remove('show');
+    cropState = null;
+  }
+
+  (function initCropper() {
+    const view = $('cropView');
+    view.addEventListener('pointerdown', e => {
+      if (!cropState) return;
+      cropState.dragging = true;
+      cropState.lastX = e.clientX;
+      cropState.lastY = e.clientY;
+      try { view.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    view.addEventListener('pointermove', e => {
+      if (!cropState || !cropState.dragging) return;
+      cropState.offsetX += e.clientX - cropState.lastX;
+      cropState.offsetY += e.clientY - cropState.lastY;
+      cropState.lastX = e.clientX;
+      cropState.lastY = e.clientY;
+      clampOffset();
+      drawCrop();
+    });
+    const endDrag = () => { if (cropState) cropState.dragging = false; };
+    view.addEventListener('pointerup', endDrag);
+    view.addEventListener('pointercancel', endDrag);
+    view.addEventListener('pointerleave', endDrag);
+  })();
+
+  $('cropZoom').addEventListener('input', e => {
+    if (!cropState) return;
+    cropState.scale = cropState.minScale * parseFloat(e.target.value);
+    clampOffset();
+    drawCrop();
+  });
+
+  $('cropCancel').addEventListener('click', closeCropper);
+
+  $('cropConfirm').addEventListener('click', () => {
+    const dataUrl = exportCrop();
+    if (!dataUrl) { closeCropper(); return; }
+    closeCropper();
+    const ok = saveSetting(AVATAR_KEY, { type: 'image', value: dataUrl });
+    if (!ok) { say('头像存不下了。'); return; }
+    avatarSetting = { type: 'image', value: dataUrl };
+    applySettings();
+    say('好。');
+  });
+
+  /* ══════════════════ 返回 / 头像点击 ══════════════════ */
+  $('backBtn').addEventListener('click', () => {
+    if (screen === 'settings') {
+      if (prevScreen === 'chat') { openChat(); return; }
+      go(prevScreen || 'home');
+      return;
+    }
+    if (screen === 'focus' && timer.running) { openQuit(); return; }
+    go('home');
+  });
+
+  $('avatarTop').addEventListener('click', () => {
+    if (screen === 'settings') return;
+    prevScreen = screen;
+    go('settings');
+  });
+
+  /* ══════════════════ 首页文案 / 徽标 ══════════════════ */
+  function overdueTasks() { return state.tasks.filter(isOverdue); }
+
+  function homeLine() {
+    const over = overdueTasks().length;
+    const left = state.tasks.filter(t => !t.done).length;
+    const done = state.tasks.filter(t => t.done).length;
+    if (over) return '有 ' + over + ' 件过了时间。我记着。';
+    if (left) return '还有 ' + left + ' 件没动。';
+    if (done) return '今天很乖。剩下的时间，想怎么过？';
+    return '今天想做什么？我陪着你。';
+  }
+
+  function refreshBadges() {
+    const total = state.tasks.length;
+    const left = state.tasks.filter(t => !t.done).length;
+    if (!total) $('planBadge').textContent = '暂无安排';
+    else if (!left) $('planBadge').textContent = '今日已全部完成';
+    else $('planBadge').textContent = total + ' 项安排 · ' + left + ' 项待完成';
+
+    $('focusBadge').textContent = '今日专注 ' + loadFocusStat() + ' 分钟';
+
+    const w = waterTotal(), wg = water.goal || 2000;
+    $('waterBadge').textContent = w >= wg ? '今日目标已达成 ✓' : '今日 ' + w + ' / ' + wg + ' ml';
+
+    const m = ledger.items.filter(i => sameMonth(i.ts));
+    const inSum = m.filter(i => i.type === 'in').reduce((s, i) => s + i.amount, 0);
+    const outSum = m.filter(i => i.type === 'out').reduce((s, i) => s + i.amount, 0);
+    const net = inSum - outSum;
+    const netStr = (net >= 0 ? '+' : '') + net.toFixed(2);
+    $('chatBadge').textContent = '本月结余 ' + netStr + (chatLog.length ? ' · ' + chatLog.length + ' 条消息' : '');
+  }
+
+  /* ══════════════════ 提醒模式 ══════════════════ */
+  const PLAN_KEY = 'luchen-plan-v3';
+  const SNOOZE_MS = 5 * 60 * 1000;
+  const OVERDUE_MS = 10 * 60 * 1000;
+  const MISS_WINDOW_MS = 6 * 60 * 60 * 1000; // 错过补发窗口：6 小时
+
+  let state = { date: todayStr(), tasks: [] };
+
+  function savePlan() { try { localStorage.setItem(PLAN_KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function loadPlan() {
+    try {
+      const raw = localStorage.getItem(PLAN_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p === 'object') {
+          state.date = p.date || todayStr();
+          state.tasks = Array.isArray(p.tasks) ? p.tasks : [];
+        }
+      }
+    } catch (e) {}
+    if (state.date !== todayStr()) resetPlanDay();
+  }
+
+  function resetPlanDay() {
+    state.date = todayStr();
+    state.tasks.forEach(t => { t.done = false; t.fired = false; t.level = 0; t.snooze = null; });
+    savePlan();
+  }
+
+  function taskDate(t) {
+    const [h, m] = t.time.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
+  function isOverdue(t) {
+    if (t.done) return false;
+    return Date.now() - taskDate(t).getTime() > OVERDUE_MS;
+  }
+
+  const REMIND_TITLES = { 1: '时间到了', 2: '我在等你', 3: '第三次' };
+  const REMIND_LINES = {
+    1: [
+      '到点了。',
+      '时间到了。',
+      '抬头。',
+      '该做了。'
+    ],
+    2: [
+      '第二次。',
+      '我在等你。',
+      '别让我等。',
+      '到时间了。'
+    ],
+    3: [
+      '第三次。',
+      '我不喜欢重复。',
+      '现在。',
+      '做完它。'
+    ]
+  };
+  const DONE_LINES = [
+    '很好。',
+    '嗯。',
+    '下一件。',
+    '不错。'
+  ];
+  const ADD_LINES = [
+    '记下了。到点喊你。',
+    '好。我盯着。',
+    '写了就要做。',
+    '嗯。'
+  ];
+  const SNOOZE_LINES = [
+    '五分钟。',
+    '好。',
+    '别让我等更久。',
+    '就五分钟。'
+  ];
+  const PUSH_LINES = [
+    '计划还欠着。',
+    '我记着。',
+    '时间过了。',
+    '还有事没做。'
+  ];
+
+  function renderPlan() {
+    const sorted = state.tasks.slice().sort((a, b) => a.time.localeCompare(b.time));
+    $('planList').innerHTML = sorted.map(t => {
+      const late = isOverdue(t);
+      return '<li class="task' + (t.done ? ' done' : '') + (late ? ' overdue' : '') + '">' +
+        '<button class="check" data-act="toggle" data-id="' + t.id + '" aria-label="完成">✓</button>' +
+        '<span class="tag">' + esc(t.time) + '</span>' +
+        (late ? '<span class="tag">超时</span>' : '') +
+        '<span class="text">' + esc(t.text) + '</span>' +
+        '<button class="del" data-act="del" data-id="' + t.id + '" aria-label="删除">×</button>' +
+        '</li>';
+    }).join('');
+
+    const total = state.tasks.length;
+    const done = state.tasks.filter(t => t.done).length;
+    const left = total - done;
+    const over = overdueTasks().length;
+
+    $('planBar').style.width = total ? (done / total * 100) + '%' : '0%';
+    $('planCount').textContent = done + ' / ' + total;
+    $('planEmpty').style.display = total ? 'none' : 'block';
+
+    let msg;
+    if (!total) msg = '还没有安排。';
+    else if (!left) msg = '今天全部完成。';
+    else if (over) msg = '还剩 ' + left + ' 件，其中 ' + over + ' 件超时。';
+    else msg = '还剩 ' + left + ' 件。';
+    $('planRate').textContent = msg;
+  }
+
+  function addPlan(time, text) {
+    text = String(text || '').trim();
+    if (!text) { say('内容还是空的。'); return; }
+    if (!time) time = '09:00';
+    if (state.tasks.some(t => t.time === time && t.text === text)) {
+      say('这一条已经在计划里了。');
+      return;
+    }
+    state.tasks.push({
+      id: uid(), time: time, text: text,
+      done: false, fired: false, level: 0, snooze: null
+    });
+    savePlan(); renderPlan(); refreshBadges();
+    say(pick(ADD_LINES));
+
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission().then(p => {
+        if (p === 'granted') {
+          $('bell').classList.add('on');
+          say('好。到点我会在系统里喊你。');
+        }
+      }).catch(() => {});
+    }
+  }
+
+  $('planList').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const task = state.tasks.find(t => t.id === id);
+    if (!task) return;
+
+    if (btn.dataset.act === 'toggle') {
+      task.done = !task.done;
+      if (task.done) {
+        task.fired = true; task.snooze = null;
+        if (currentTask && currentTask.id === task.id) closeRemind();
+        say(pick(DONE_LINES));
+      }
+      savePlan(); renderPlan(); refreshBadges();
+    } else if (btn.dataset.act === 'del') {
+      state.tasks = state.tasks.filter(t => t.id !== id);
+      if (currentTask && currentTask.id === id) closeRemind();
+      savePlan(); renderPlan(); refreshBadges();
+      say('去掉了。');
+    }
+  });
+
+  $('planForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const textEl = $('planText');
+    addPlan($('planTime').value, textEl.value);
+    textEl.value = '';
+    textEl.focus();
+  });
+
+  let currentTask = null;
+
+  function fireSystemNotification(title, body, tag) {
+    if (!('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+    try {
+      const opts = {
+        body: body,
+        tag: tag,
+        requireInteraction: true,
+        silent: false
+      };
+      const n = new Notification(title, opts);
+      n.onclick = function () {
+        try { window.focus(); } catch (e) {}
+        try { this.close(); } catch (e) {}
+      };
+      n.onerror = function () {};
+    } catch (e) {}
+  }
+
+  function remindTask(task) {
+    currentTask = task;
+    const lv = Math.min(task.level || 1, 3);
+    $('modalLevel').textContent = '第 ' + (task.level || 1) + ' 次提醒';
+    $('rTitle').textContent = REMIND_TITLES[lv];
+    $('modalTask').textContent = task.time + ' · ' + task.text;
+    $('modalMsg').textContent = pick(REMIND_LINES[lv]);
+    $('btnLater').textContent = (task.level || 1) >= 3 ? '再拖一次？' : '再等 5 分钟';
+
+    $('remindOverlay').classList.add('show');
+    shakeAvatar();
+    playTones([880, 1108.73, 1318.51], 0.55, 0.15, 0.12);
+
+    fireSystemNotification(
+      '陆沉',
+      task.time + ' · ' + task.text,
+      'luchen-task-' + task.id
+    );
+  }
+
+  function closeRemind() {
+    $('remindOverlay').classList.remove('show');
+    currentTask = null;
+  }
+
+  $('btnLater').addEventListener('click', () => {
+    if (!currentTask) { closeRemind(); return; }
+    const t = state.tasks.find(x => x.id === currentTask.id);
+    if (t) { t.level = (t.level || 1) + 1; t.snooze = Date.now() + SNOOZE_MS; }
+    savePlan(); refreshBadges(); closeRemind();
+    say(pick(SNOOZE_LINES));
+  });
+
+  $('btnDone').addEventListener('click', () => {
+    if (currentTask) {
+      const t = state.tasks.find(x => x.id === currentTask.id);
+      if (t) { t.done = true; t.fired = true; t.snooze = null; }
+      say(pick(DONE_LINES));
+    }
+    savePlan(); renderPlan(); refreshBadges(); closeRemind();
+  });
+
+  /* ══════════════════ 督促模式 ══════════════════ */
+  const FOCUS_KEY = 'luchen-focus-v1';
+  const R = 88;
+  const C = 2 * Math.PI * R;
+  let selectedMin = 25;
+
+  const timer = {
+    total: 0, endAt: 0, running: false, paused: false, pauseStart: 0,
+    phase: -1, lastSpeak: 0, lastIdx: -1, tickId: null
+  };
+
+  const PHASE_LINES = [
+    ['开始。', '我在这儿。', '好。', '专心。'],
+    ['别分心。', '保持住。', '继续。', '别看手机。'],
+    ['过半了。', '别松。', '快到了。', '再撑一会儿。'],
+    ['最后一点。', '别停。', '马上就完。', '收尾了。']
+  ];
+  const START_LINES = ['开始。', '好。', '我在这儿。'];
+  const RESUME_LINES = ['好。', '继续。', '嗯。'];
+  const FOCUS_DONE_LINES = ['很好。', '做完了。', '一段落地。歇会儿。'];
+  const QUIT_LINES = ['没关系。', '想继续时，我还在。', '休息吧。'];
+
+  function loadFocusStat() {
+    try {
+      const raw = localStorage.getItem(FOCUS_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && p.date === todayStr()) return p.minutes || 0;
+      }
+    } catch (e) {}
+    return 0;
+  }
+  function addFocusStat(min) {
+    const total = loadFocusStat() + min;
+    try { localStorage.setItem(FOCUS_KEY, JSON.stringify({ date: todayStr(), minutes: total })); } catch (e) {}
+    $('todayMin').textContent = total;
+    refreshBadges();
+  }
+
+  $('chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedMin = parseInt(chip.dataset.min, 10);
+    $('customMin').value = '';
+  });
+
+  $('customMin').addEventListener('input', function () {
+    const v = parseInt(this.value, 10);
+    if (v && v > 0) {
+      document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('active'));
+      selectedMin = Math.min(v, 180);
+    } else {
+      const active = document.querySelector('#chips .chip.active');
+      selectedMin = active ? parseInt(active.dataset.min, 10) : 25;
+    }
+  });
+
+  $('customMin').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); startTimer(); }
+  });
+
+  $('startBtn').addEventListener('click', startTimer);
+
+  function startTimer() {
+    if (timer.running) return;
+    let min = selectedMin;
+    const custom = parseInt($('customMin').value, 10);
+    if (custom && custom > 0) min = Math.min(custom, 180);
+    if (!min || min <= 0) { say('先选一个时长。'); return; }
+
+    timer.total = min * 60 * 1000;
+    timer.endAt = Date.now() + timer.total;
+    timer.running = true; timer.paused = false;
+    timer.phase = -1; timer.lastSpeak = Date.now(); timer.lastIdx = -1;
+
+    $('setupPanel').hidden = true;
+    $('timerPanel').hidden = false;
+    $('ringFg').style.strokeDasharray = C;
+    $('ringFg').style.strokeDashoffset = 0;
+    $('clock').textContent = pad(min) + ':00';
+
+    say(pick(START_LINES));
+    playTones([659.25, 880], 0.5, 0.15, 0.1);
+
+    if (timer.tickId) clearInterval(timer.tickId);
+    timer.tickId = setInterval(focusTick, 200);
+    focusTick();
+  }
+
+  function focusTick() {
+    if (!timer.running || timer.paused) return;
+    const remain = Math.max(0, timer.endAt - Date.now());
+    const progress = 1 - remain / timer.total;
+    $('ringFg').style.strokeDashoffset = C * progress;
+    const sec = Math.ceil(remain / 1000);
+    $('clock').textContent = pad(Math.floor(sec / 60)) + ':' + pad(sec % 60);
+    maybeSpeak(progress);
+    if (remain <= 0) finishFocus();
+  }
+
+  function phaseOf(p) {
+    if (p < 0.15) return 0;
+    if (p < 0.6) return 1;
+    if (p < 0.88) return 2;
+    return 3;
+  }
+
+  function maybeSpeak(progress) {
+    const now = Date.now();
+    const ph = phaseOf(progress);
+    if (ph !== timer.phase) {
+      timer.phase = ph;
+      if (now - timer.lastSpeak > 6000) { speakPhase(ph); timer.lastSpeak = now; }
+      return;
+    }
+    if (now - timer.lastSpeak > 18000) { timer.lastSpeak = now; speakPhase(ph); }
+  }
+
+  function speakPhase(ph) {
+    const arr = PHASE_LINES[ph];
+    if (!arr || !arr.length) return;
+    let i;
+    do { i = Math.floor(Math.random() * arr.length); }
+    while (arr.length > 1 && i === timer.lastIdx);
+    timer.lastIdx = i;
+    say(arr[i]);
+    if (ph >= 2) shakeAvatar();
+  }
+
+  function openQuit() {
+    if (!timer.running) return;
+    if (!timer.paused) { timer.paused = true; timer.pauseStart = Date.now(); }
+    $('quitOverlay').classList.add('show');
+    playTones([587.33, 493.88], 0.55, 0.16, 0.08);
+  }
+
+  $('quitBtn').addEventListener('click', openQuit);
+
+  $('quitCancel').addEventListener('click', () => {
+    $('quitOverlay').classList.remove('show');
+    if (timer.running && timer.paused) {
+      timer.endAt += Date.now() - timer.pauseStart;
+      timer.paused = false;
+      timer.lastSpeak = Date.now() - 18000;
+    }
+    say(pick(RESUME_LINES));
+  });
+
+  $('quitConfirm').addEventListener('click', () => {
+    $('quitOverlay').classList.remove('show');
+    stopTimer();
+    say(pick(QUIT_LINES));
+  });
+
+  function stopTimer() {
+    timer.running = false; timer.paused = false;
+    if (timer.tickId) { clearInterval(timer.tickId); timer.tickId = null; }
+    $('timerPanel').hidden = true;
+    $('setupPanel').hidden = false;
+    $('ringFg').style.strokeDashoffset = 0;
+  }
+
+  function finishFocus() {
+    const min = Math.round(timer.total / 60000);
+    stopTimer();
+    addFocusStat(min);
+    $('doneLine').textContent = pick(FOCUS_DONE_LINES);
+    $('doneOverlay').classList.add('show');
+    playTones([659.25, 783.99, 987.77, 1318.51], 0.6, 0.13, 0.12);
+    say('时间到。');
+    fireSystemNotification('陆沉', min + ' 分钟。做完了。', 'luchen-focus');
+  }
+
+  $('doneClose').addEventListener('click', () => {
+    $('doneOverlay').classList.remove('show');
+    go('home');
+  });
+
+  /* ══════════════════ 喝水 ══════════════════ */
+  const WATER_KEY = 'luchen-water-v1';
+  let water = { date: todayStr(), goal: 2000, entries: [] };
+
+  function saveWater() { try { localStorage.setItem(WATER_KEY, JSON.stringify(water)); } catch (e) {} }
+
+  function loadWater() {
+    try {
+      const raw = localStorage.getItem(WATER_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p === 'object') {
+          water.date = typeof p.date === 'string' ? p.date : todayStr();
+          water.goal = num(p.goal) > 0 ? Math.round(num(p.goal)) : 2000;
+          water.entries = (Array.isArray(p.entries) ? p.entries : [])
+            .filter(e => e && typeof e === 'object')
+            .map(e => ({ id: String(e.id || uid()), ml: Math.max(1, Math.round(num(e.ml))), ts: num(e.ts) || Date.now() }));
+        }
+      }
+    } catch (e) {}
+    if (water.date !== todayStr()) resetWaterDay();
+  }
+
+  function resetWaterDay() {
+    water.date = todayStr();
+    water.entries = [];
+    saveWater();
+  }
+
+  function waterTotal() { return water.entries.reduce((s, e) => s + e.ml, 0); }
+
+  const WATER_LINES = [
+    '嗯。',
+    '记下了。',
+    '好。',
+    '不错。',
+    '继续。'
+  ];
+
+  function renderWater() {
+    const total = waterTotal();
+    const goal = water.goal || 2000;
+    const pct = Math.min(100, total / goal * 100);
+
+    $('waterNum').innerHTML = total + '<small>ml</small>';
+    $('waterCount').textContent = total + ' / ' + goal + ' ml';
+    $('waterBar').style.width = pct + '%';
+
+    let sub;
+    if (total === 0) sub = '今天还一口没喝。先喝一杯。';
+    else if (total < goal) sub = '还差 ' + (goal - total) + ' ml。';
+    else sub = '今天够了。';
+    $('waterSub').textContent = sub;
+
+    const list = water.entries.slice().sort((a, b) => b.ts - a.ts);
+    $('waterList').innerHTML = list.map(e => {
+      const d = new Date(e.ts);
+      return '<li class="record">' +
+        '<span class="r-time">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</span>' +
+        '<span class="r-main">💧 喝了 ' + e.ml + ' ml</span>' +
+        '<button class="del" data-act="del" data-id="' + e.id + '" aria-label="删除">×</button>' +
+        '</li>';
+    }).join('');
+    $('waterEmpty').style.display = water.entries.length ? 'none' : 'block';
+
+    document.querySelectorAll('#goalChips .chip').forEach(c => {
+      c.classList.toggle('active', parseInt(c.dataset.goal, 10) === goal);
+    });
+  }
+
+  function addWater(ml) {
+    ml = Math.round(num(ml));
+    if (!ml || ml <= 0) { say('先写一个毫升数。'); return; }
+    if (ml > 2000) { say('一次喝不了这么多吧。'); return; }
+
+    const before = waterTotal();
+    const goal = water.goal || 2000;
+    water.entries.push({ id: uid(), ml: ml, ts: Date.now() });
+    saveWater(); renderWater(); refreshBadges();
+
+    const after = waterTotal();
+    if (before < goal && after >= goal) {
+      say('今天够了。');
+      playTones([659.25, 880, 1046.5], 0.45, 0.13, 0.09);
+    } else {
+      say(pick(WATER_LINES));
+    }
+  }
+
+  document.querySelectorAll('.quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => addWater(btn.dataset.ml));
+  });
+
+  $('waterCustomAdd').addEventListener('click', () => {
+    addWater($('customWater').value);
+    $('customWater').value = '';
+  });
+  $('customWater').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addWater($('customWater').value); $('customWater').value = ''; }
+  });
+
+  $('waterUndo').addEventListener('click', () => {
+    if (!water.entries.length) { say('今天还没有记录。'); return; }
+    const last = water.entries.reduce((a, b) => (b.ts > a.ts ? b : a), water.entries[0]);
+    water.entries = water.entries.filter(e => e.id !== last.id);
+    saveWater(); renderWater(); refreshBadges();
+    say('撤回了。');
+  });
+
+  $('waterList').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-act="del"]');
+    if (!btn) return;
+    water.entries = water.entries.filter(x => x.id !== btn.dataset.id);
+    saveWater(); renderWater(); refreshBadges();
+    say('去掉了。');
+  });
+
+  $('goalChips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    water.goal = parseInt(chip.dataset.goal, 10);
+    saveWater(); renderWater(); refreshBadges();
+    say('目标改成 ' + water.goal + ' ml。');
+  });
+
+  /* ══════════════════ 记账 ══════════════════ */
+  const MONEY_KEY = 'luchen-money-v1';
+
+  const CATS = {
+    out: [
+      { k: 'food', n: '餐饮', i: '🍚' }, { k: 'traffic', n: '交通', i: '🚌' },
+      { k: 'shop', n: '购物', i: '🛍️' }, { k: 'fun', n: '娱乐', i: '🎮' },
+      { k: 'daily', n: '日用', i: '🧴' }, { k: 'study', n: '学习', i: '📚' },
+      { k: 'health', n: '医疗', i: '💊' }, { k: 'other', n: '其他', i: '📦' }
+    ],
+    in: [
+      { k: 'salary', n: '工资', i: '💰' }, { k: 'bonus', n: '奖金', i: '🎁' },
+      { k: 'redpacket', n: '红包', i: '🧧' }, { k: 'parttime', n: '兼职', i: '💼' },
+      { k: 'invest', n: '理财', i: '📈' }, { k: 'refund', n: '退款', i: '↩️' },
+      { k: 'gift', n: '礼物', i: '💝' }, { k: 'other', n: '其他', i: '✨' }
+    ]
+  };
+
+  let ledger = { items: [] };
+  let moneyType = 'out';
+  let moneyCat = 'food';
+
+  function saveMoney() { try { localStorage.setItem(MONEY_KEY, JSON.stringify(ledger)); } catch (e) {} }
+
+  function loadMoney() {
+    try {
+      const raw = localStorage.getItem(MONEY_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && Array.isArray(p.items)) {
+          ledger.items = p.items.filter(x => x && typeof x === 'object').map(x => ({
+            id: String(x.id || uid()),
+            type: x.type === 'in' ? 'in' : 'out',
+            amount: Math.max(0, Math.round(num(x.amount) * 100) / 100),
+            cat: typeof x.cat === 'string' ? x.cat : 'other',
+            note: typeof x.note === 'string' ? x.note : '',
+            ts: num(x.ts) || Date.now()
+          }));
+        }
+      }
+    } catch (e) {}
+  }
+
+  function catInfo(type, key) {
+    const list = CATS[type] || [];
+    return list.find(c => c.k === key) || { k: 'other', n: '其他', i: '📦' };
+  }
+
+  function renderCats() {
+    const list = CATS[moneyType];
+    if (!list.some(c => c.k === moneyCat)) moneyCat = list[0].k;
+    $('catGrid').innerHTML = list.map(c =>
+      '<button type="button" class="cat' + (c.k === moneyCat ? ' active' : '') + '" data-cat="' + c.k + '">' +
+      '<i>' + c.i + '</i>' + c.n + '</button>'
+    ).join('');
+  }
+
+  function renderMoney() {
+    const monthItems = ledger.items.filter(i => sameMonth(i.ts));
+    const sumIn = monthItems.filter(i => i.type === 'in').reduce((s, i) => s + i.amount, 0);
+    const sumOut = monthItems.filter(i => i.type === 'out').reduce((s, i) => s + i.amount, 0);
+    const net = sumIn - sumOut;
+
+    $('sumIn').textContent = sumIn.toFixed(2);
+    $('sumOut').textContent = sumOut.toFixed(2);
+    $('sumNet').textContent = net.toFixed(2);
+    $('sumNet').style.color = net >= 0 ? '#3f9e73' : '#e0728f';
+
+    const recent = ledger.items.slice(0, 50);
+    $('moneyList').innerHTML = recent.map(i => {
+      const c = catInfo(i.type, i.cat);
+      const d = new Date(i.ts);
+      const time = sameDay(i.ts)
+        ? pad(d.getHours()) + ':' + pad(d.getMinutes())
+        : (d.getMonth() + 1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+      return '<li class="record">' +
+        '<span class="r-time">' + time + '</span>' +
+        '<span class="r-main">' + c.i + ' ' + esc(c.n) + (i.note ? ' · ' + esc(i.note) : '') + '</span>' +
+        '<span class="r-amt ' + i.type + '">' + (i.type === 'out' ? '-' : '+') + i.amount.toFixed(2) + '</span>' +
+        '<button class="del" data-act="del" data-id="' + i.id + '" aria-label="删除">×</button>' +
+        '</li>';
+    }).join('');
+    $('moneyEmpty').style.display = ledger.items.length ? 'none' : 'block';
+  }
+
+  function addLedgerEntry(entry) {
+    const amount = Math.round(num(entry.amount) * 100) / 100;
+    if (!amount || amount <= 0) return false;
+    const type = entry.type === 'in' ? 'in' : 'out';
+    const valid = (CATS[type] || []).map(c => c.k);
+    ledger.items.unshift({
+      id: uid(),
+      type: type,
+      amount: amount,
+      cat: valid.indexOf(entry.cat) >= 0 ? entry.cat : 'other',
+      note: String(entry.note || '').trim().slice(0, 20),
+      ts: Date.now()
+    });
+    if (ledger.items.length > 500) ledger.items.length = 500;
+    saveMoney(); renderMoney(); refreshBadges();
+    return true;
+  }
+
+  document.querySelectorAll('.seg').forEach(seg => {
+    seg.addEventListener('click', () => {
+      if (seg.dataset.type === moneyType) return;
+      moneyType = seg.dataset.type;
+      document.querySelectorAll('.seg').forEach(s => s.classList.toggle('active', s.dataset.type === moneyType));
+      renderCats();
+    });
+  });
+
+  $('catGrid').addEventListener('click', e => {
+    const b = e.target.closest('.cat');
+    if (!b) return;
+    moneyCat = b.dataset.cat;
+    renderCats();
+  });
+
+  function addMoneyFromForm() {
+    const amt = Math.round(num($('moneyAmount').value) * 100) / 100;
+    if (!amt || amt <= 0) { notify('金额还没写。'); return; }
+    if (amt > 9999999) { notify('这个数目太大了。'); return; }
+    const note = $('moneyNote').value.trim();
+    addLedgerEntry({ type: moneyType, amount: amt, cat: moneyCat, note: note });
+    $('moneyAmount').value = '';
+    $('moneyNote').value = '';
+    notify(moneyType === 'out' ? '记下了。' : '进账了。');
+    playTones([659.25, 880], 0.35, 0.12, 0.07);
+  }
+
+  $('moneyAdd').addEventListener('click', addMoneyFromForm);
+  $('moneyAmount').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addMoneyFromForm(); } });
+  $('moneyNote').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addMoneyFromForm(); } });
+
+  $('moneyList').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-act="del"]');
+    if (!btn) return;
+    ledger.items = ledger.items.filter(x => x.id !== btn.dataset.id);
+    saveMoney(); renderMoney(); refreshBadges();
+    notify('去掉了。');
+  });
+
+  /* ══════════════════ 私聊 · 全屏 ══════════════════ */
+  const CHAT_KEY = 'luchen-chat-v1';
+  let chatLog = [];
+  let chatBusy = false;
+  let chatTyping = false;
+
+  function saveChat() {
+    try { localStorage.setItem(CHAT_KEY, JSON.stringify(chatLog.slice(-200))); } catch (e) {}
+  }
+
+  function loadChat() {
+    try {
+      const raw = localStorage.getItem(CHAT_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (Array.isArray(p)) {
+          chatLog = p.filter(m => m && typeof m === 'object').map(m => {
+            const ts = num(m.ts) || Date.now();
+            if (m.kind === 'ledger') {
+              return {
+                kind: 'ledger',
+                type: m.type === 'in' ? 'in' : 'out',
+                amount: Math.max(0, Math.round(num(m.amount) * 100) / 100),
+                cat: typeof m.cat === 'string' ? m.cat : 'other',
+                note: typeof m.note === 'string' ? m.note.slice(0, 20) : '',
+                ts: ts
+              };
+            }
+            if (typeof m.content !== 'string') return null;
+            return {
+              role: m.role === 'assistant' ? 'assistant' : 'user',
+              content: String(m.content).slice(0, 2000),
+              ts: ts
+            };
+          }).filter(Boolean);
+        }
+      }
+    } catch (e) {}
+  }
+
+  function ledgerCardHTML(m) {
+    const c = catInfo(m.type, m.cat);
+    const d = new Date(m.ts);
+    const time = pad(d.getHours()) + ':' + pad(d.getMinutes());
+    const sign = m.type === 'out' ? '−' : '+';
+    return '<div class="ledger-card">' +
+      '<div class="lc-head">' +
+        '<span class="lc-icon">' + c.i + '</span>' +
+        '<span class="lc-cat">' + esc(c.n) + '</span>' +
+        '<span class="lc-amt ' + m.type + '">' + sign + Number(m.amount).toFixed(2) + '</span>' +
+      '</div>' +
+      (m.note ? '<div class="lc-note">' + esc(m.note) + '</div>' : '') +
+      '<div class="lc-foot">' + time + ' · 已记入本月账本</div>' +
+    '</div>';
+  }
+
+  function renderChat() {
+    const el = $('chatLog');
+    let html = '';
+
+    if (!chatLog.length) {
+      html = '<div class="empty">还没有聊天。<br>说一句吧，我听着。</div>';
+    } else {
+      html = chatLog.map(m => {
+        if (m.kind === 'ledger') return ledgerCardHTML(m);
+
+        const d = new Date(m.ts);
+        const time = pad(d.getHours()) + ':' + pad(d.getMinutes());
+        const isMe = m.role === 'user';
+        const av = isMe ? '<div class="m-av">我</div>' : '<div class="avatar sm">沉</div>';
+        return '<div class="msg' + (isMe ? ' me' : '') + '">' + av +
+          '<div class="m-col">' +
+            '<div class="m-body">' + esc(m.content) + '</div>' +
+            '<div class="m-time">' + time + '</div>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    if (chatTyping) {
+      html += '<div class="msg"><div class="avatar sm">沉</div><div class="m-col">' +
+              '<div class="m-body typing"><i></i><i></i><i></i></div></div></div>';
+    }
+
+    el.innerHTML = html;
+    el.scrollTop = el.scrollHeight;
+    applySettings();
+  }
+
+  function setTyping(on) {
+    chatTyping = !!on;
+    renderChat();
+  }
+
+  const CAT_HINTS = [
+    { re: /(吃|饭|餐|外卖|咖啡|奶茶|喝|火锅|烧烤|面包|蛋糕|水果|零食|早点|午饭|晚饭|早餐|食堂)/, cat: 'food' },
+    { re: /(打车|地铁|公交|高铁|机票|火车|油费|停车|滴滴|出租|加油|车票)/, cat: 'traffic' },
+    { re: /(衣服|鞋|包|化妆|护肤|电器|数码|手机|淘宝|快递|购物|买)/, cat: 'shop' },
+    { re: /(电影|游戏|唱歌|KTV|演唱会|门票|娱乐|剧本杀|展览|玩)/, cat: 'fun' },
+    { re: /(纸巾|洗衣|清洁|超市|家居|牙膏|日用|沐浴|洗发)/, cat: 'daily' },
+    { re: /(书|课|学习|培训|考试|文具|资料|学费)/, cat: 'study' },
+    { re: /(药|医院|看病|体检|挂号|牙医|门诊)/, cat: 'health' }
+  ];
+
+  function looksLikeMoney(text) {
+    const t = String(text || '');
+    if (!/\d/.test(t)) return false;
+    return /(花|买|付|打车|吃|喝|咖啡|奶茶|饭|工资|红包|退款|报销|赚|收入|进账|充|交|转账|请客|花费|消费|买了|花了|收到|发了|奖金|兼职|理财|返现|下单|购|订单|外卖|超市|车费|油费|门票|电影|游戏|衣服|鞋|包|药|医院|书|课|快递|运费)/.test(t);
+  }
+
+  function localParseMoney(text) {
+    const t = String(text || '').trim();
+    const isIn = /(赚|收入|工资|红包|报销|退款|进账|收到|奖金|中奖|兼职|理财|返现|发了)/.test(t) &&
+                 !/(花了|支出|付了|买了|请客)/.test(t);
+    const m = t.match(/(\d+(?:\.\d{1,2})?)/);
+    const amount = m ? parseFloat(m[1]) : 0;
+
+    let cat = 'other';
+    if (isIn) {
+      if (/工资|薪水/.test(t)) cat = 'salary';
+      else if (/奖金|绩效|提成/.test(t)) cat = 'bonus';
+      else if (/红包/.test(t)) cat = 'redpacket';
+      else if (/兼职|外快/.test(t)) cat = 'parttime';
+      else if (/理财|基金|股票|利息/.test(t)) cat = 'invest';
+      else if (/退款|返现|报销/.test(t)) cat = 'refund';
+      else if (/礼物|送的/.test(t)) cat = 'gift';
+    } else {
+      for (const h of CAT_HINTS) { if (h.re.test(t)) { cat = h.cat; break; } }
+    }
+
+    let note = t
+      .replace(/(\d+(?:\.\d{1,2})?)\s*(元|块钱|块|rmb|RMB|￥|¥)?/g, '')
+      .replace(/(今天|昨天|刚刚|刚才|我|又|去|在|了|的)/g, '')
+      .replace(/(花了|花|付了|付|买了|买|收到|赚了|赚|一共|总共|请客|下单了|下单|充了|充|进账|到账)/g, '')
+      .replace(/[，。,.!！?？~～、\s]+/g, ' ')
+      .trim()
+      .slice(0, 14);
+
+    return { type: isIn ? 'in' : 'out', amount: amount, cat: cat, note: note };
+  }
+
+  const CARE_OUT = {
+    food: [
+      '嗯。吃了就好。',
+      '花在吃上，没什么。',
+      '下次带我。',
+      '别老对付一口。'
+    ],
+    traffic: [
+      '路上慢点。',
+      '到了说一声。',
+      '别为这个走夜路。',
+      '打车可以。'
+    ],
+    shop: [
+      '买了就买了。',
+      '喜欢就好。',
+      '别买完又后悔。',
+      '下次带上我。'
+    ],
+    fun: [
+      '玩得开心点。',
+      '别太晚。',
+      '放松也好。',
+      '去吧。'
+    ],
+    daily: [
+      '该买就买。',
+      '这些不用省。',
+      '记下了。',
+      '缺什么就补。'
+    ],
+    study: [
+      '这个钱值得。',
+      '需要什么跟我说。',
+      '花在学习上，我不说。',
+      '买吧。'
+    ],
+    health: [
+      '看了就好。',
+      '药记得吃。',
+      '下次不舒服早点说。',
+      '别硬扛。'
+    ],
+    other: [
+      '记下了。',
+      '花就花了。',
+      '别有负担。',
+      '行。'
+    ]
+  };
+  const CARE_IN = {
+    salary: [
+      '发工资了。辛苦。',
+      '拿着。',
+      '这个月不容易。',
+      '给自己买点想要的。'
+    ],
+    bonus: [
+      '看吧。我说过你行。',
+      '应得的。',
+      '别舍不得花。',
+      '拿着。'
+    ],
+    redpacket: [
+      '收着。',
+      '谁给的。',
+      '嗯。'
+    ],
+    parttime: [
+      '又去忙了。',
+      '别太累。',
+      '辛苦了。',
+      '够你喝几杯了。'
+    ],
+    invest: [
+      '稳一点。',
+      '见好就收。',
+      '别贪。',
+      '你自己拿主意。'
+    ],
+    refund: [
+      '本来就是你的。',
+      '到账就好。',
+      '好。'
+    ],
+    gift: [
+      '谁送的。',
+      '收着。',
+      '嗯。'
+    ],
+    other: [
+      '进账了。我替你守着。',
+      '记下了。',
+      '好。'
+    ]
+  };
+
+  function careLine(parsed) {
+    if (parsed.type === 'out' && parsed.amount >= 1000) {
+      return pick([
+        '这个数不小。下次跟我说一声。',
+        '嗯……行。你高兴就好。',
+        '下次带上我。'
+      ]);
+    }
+    if (parsed.type === 'out' && parsed.amount >= 300) {
+      return pick([
+        '花得有点多。开心就好。',
+        '记下了。',
+        '行。'
+      ]);
+    }
+    const pool = (parsed.type === 'in' ? CARE_IN[parsed.cat] : CARE_OUT[parsed.cat])
+              || (parsed.type === 'in' ? CARE_IN.other : CARE_OUT.other);
+    return pick(pool);
+  }
+
+  function cleanReply(raw) {
+    let t = String(raw || '').replace(/\r/g, '').trim();
+    if (!t) return '';
+    t = t.replace(/^\s*(陆沉|我)\s*[:：]\s*/, '');
+    t = t.replace(/\*[^*\n]{0,40}\*/g, '');
+    t = t.replace(/（[^）\n]{0,20}）/g, '');
+    t = t.replace(/^["“”'']+/, '').replace(/["“”'']+$/, '');
+    const lines = t.split('\n').map(s => s.trim()).filter(Boolean);
+    t = lines.length ? lines[0] : '';
+    if (t.length > 60) {
+      const m = t.match(/^[^。！？!?~～]{1,60}[。！？!?~～]?/);
+      if (m) t = m[0];
+    }
+    return t.trim();
+  }
+
+  function buildChatMessages(forceStrict) {
+    const strict = forceStrict === true || (forceStrict !== false && apiConfig.strictMode);
+    const sys = strict ? (LUCHEN_SYSTEM_PROMPT + STRICT_APPEND) : LUCHEN_SYSTEM_PROMPT;
+
+    const merged = [];
+    chatLog.filter(m => m.kind !== 'ledger').slice(-60).forEach(m => {
+      const last = merged[merged.length - 1];
+      if (last && last.role === m.role) last.content += '\n' + m.content;
+      else merged.push({ role: m.role, content: m.content });
+    });
+    while (merged.length && merged[merged.length - 1].role !== 'user') merged.pop();
+    if (!merged.length) merged.push({ role: 'user', content: '在吗' });
+
+    return [{ role: 'system', content: sys }].concat(merged);
+  }
+
+  async function generateLuchenReply() {
+    if (!apiReady()) return null;
+    const baseTemp = typeof apiConfig.temperature === 'number' ? apiConfig.temperature : 0.95;
+
+    try {
+      const msgs = buildChatMessages(false);
+      const raw = await callOpenAI(msgs, {
+        temperature: baseTemp,
+        max_tokens: 120,
+        timeout: 60000
+      });
+      let reply = cleanReply(raw);
+      if (!reply) return null;
+
+      if (apiConfig.strictMode && isOOC(reply)) {
+        const msgs2 = buildChatMessages(true);
+        const raw2 = await callOpenAI(msgs2, {
+          temperature: Math.max(0.6, Math.min(0.85, baseTemp - 0.15)),
+          max_tokens: 120,
+          timeout: 60000
+        });
+        reply = cleanReply(raw2);
+        if (!reply || isOOC(reply)) return null;
+      }
+      return reply;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function autoReply() {
+    if (chatBusy) return;
+    if (!apiReady()) return;
+    chatBusy = true;
+    setTyping(true);
+    try {
+      const reply = await generateLuchenReply();
+      setTyping(false);
+      if (reply) {
+        chatLog.push({ role: 'assistant', content: reply, ts: Date.now() });
+        saveChat(); renderChat(); refreshBadges();
+        playTones([880], 0.18, 0.1, 0.05);
+      }
+    } finally {
+      chatBusy = false;
+    }
+  }
+
+  async function replyToLedger(parsed) {
+    setTyping(true);
+    let line = '';
+
+    if (apiReady()) {
+      line = await generateLuchenReply() || '';
+    }
+
+    if (!line) {
+      line = careLine(parsed);
+      await sleep(520);
+    }
+
+    setTyping(false);
+    chatLog.push({ role: 'assistant', content: line, ts: Date.now() });
+    saveChat(); renderChat(); refreshBadges();
+  }
+
+  async function sendChatMsg() {
+    const el = $('chatInput');
+    const v = el.value.trim();
+    if (!v) return;
+    el.value = '';
+
+    chatLog.push({ role: 'user', content: v.slice(0, 300), ts: Date.now() });
+    saveChat(); renderChat(); refreshBadges();
+
+    if (looksLikeMoney(v)) {
+      const parsed = localParseMoney(v);
+      if (parsed && parsed.amount > 0 && addLedgerEntry(parsed)) {
+        chatLog.push({
+          kind: 'ledger',
+          type: parsed.type,
+          amount: parsed.amount,
+          cat: parsed.cat,
+          note: parsed.note,
+          ts: Date.now()
+        });
+        saveChat(); renderChat(); refreshBadges();
+        playTones([880], 0.15, 0.08, 0.05);
+        await replyToLedger(parsed);
+        return;
+      }
+    }
+
+    if (apiConfig.autoReply && apiReady() && !chatBusy) {
+      await autoReply();
+    }
+  }
+
+  $('chatSend').addEventListener('click', sendChatMsg);
+  $('chatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); sendChatMsg(); }
+  });
+
+  $('chatBack').addEventListener('click', () => {
+    $('screen-chat').hidden = true;
+    $('ledgerDrawer').hidden = true;
+    screen = '';
+    go('home');
+  });
+
+  $('chatLedger').addEventListener('click', () => {
+    const d = $('ledgerDrawer');
+    d.hidden = !d.hidden;
+    $('chatLedger').classList.toggle('on', !d.hidden);
+    if (!d.hidden) renderMoney();
+  });
+
+  $('ledgerClose').addEventListener('click', () => {
+    $('ledgerDrawer').hidden = true;
+    $('chatLedger').classList.remove('on');
+  });
+
+  $('ldCfgBtn').addEventListener('click', () => {
+    $('ledgerDrawer').hidden = true;
+    $('chatLedger').classList.remove('on');
+    $('screen-chat').hidden = true;
+    prevScreen = 'chat';
+    go('settings');
+  });
+
+  $('chatClear').addEventListener('click', () => {
+    if (!chatLog.length) { toast('还没有聊天。'); return; }
+    if (!window.confirm('清空这段对话？账本不会被清掉。')) return;
+    chatLog = [];
+    saveChat(); renderChat(); refreshBadges();
+    toast('清掉了。');
+  });
+
+  async function generateReply() {
+    if (chatBusy) return;
+    if (!chatLog.length) { notify('先说一句吧。'); return; }
+    if (!apiReady()) {
+      notify('还没配置接口。去账本里点「接口设置」填一下。');
+      return;
+    }
+
+    chatBusy = true;
+    const btn = $('chatGen');
+    btn.disabled = true;
+    setTyping(true);
+
+    try {
+      const reply = await generateLuchenReply();
+      setTyping(false);
+      if (reply) {
+        chatLog.push({ role: 'assistant', content: reply, ts: Date.now() });
+        saveChat(); renderChat(); refreshBadges();
+        playTones([880], 0.18, 0.1, 0.05);
+      } else {
+        notify('他没说话。再点一次试试。');
+      }
+    } finally {
+      chatBusy = false;
+      btn.disabled = false;
+    }
+  }
+
+  $('chatGen').addEventListener('click', generateReply);
+
+  /* ══════════════════ 系统通知 ══════════════════ */
+  $('bell').addEventListener('click', () => {
+    if (!('Notification' in window)) {
+      say('这个浏览器不支持系统通知。');
+      return;
+    }
+    Notification.requestPermission().then(p => {
+      if (p === 'granted') {
+        $('bell').classList.add('on');
+        say('好。切到别的页面我也会叫你。');
+      } else {
+        say('行。');
+      }
+    }).catch(() => {});
+  });
+
+  /* ══════════════════ 心跳 ══════════════════ */
+  let lastPush = 0;
+  let lastTickAt = 0;
+
+  function globalTick() {
+    const now = Date.now();
+    // 防止主线程恢复瞬间几百条 tick 堆积，节流到 800ms
+    if (now - lastTickAt < 800) return;
+    lastTickAt = now;
+
+    let dayChanged = false;
+
+    if (state.date !== todayStr()) {
+      resetPlanDay(); dayChanged = true;
+      if (screen === 'plan') renderPlan();
+    }
+    if (water.date !== todayStr()) {
+      resetWaterDay(); dayChanged = true;
+      if (screen === 'water') renderWater();
+    }
+    if (dayChanged) {
+      refreshBadges();
+      if (screen === 'home') say(homeLine());
+      if (screen === 'chat') renderMoney();
+    }
+
+    let changed = false;
+    let fired = null;
+
+    state.tasks.forEach(t => {
+      if (t.done) return;
+
+      if (!t.fired) {
+        const tTime = taskDate(t).getTime();
+        if (now >= tTime) {
+          if (now - tTime < MISS_WINDOW_MS) {
+            t.fired = true; t.level = 1; changed = true;
+            if (!fired) fired = t;
+          } else {
+            t.fired = true; changed = true;
+          }
+        }
+        return;
+      }
+
+      if (t.fired && t.snooze && now >= t.snooze) {
+        t.snooze = null;
+        t.level = (t.level || 1) + 1;
+        changed = true;
+        if (!fired) fired = t;
+      }
+    });
+
+    if (changed) {
+      savePlan();
+      if (screen === 'plan') renderPlan();
+      refreshBadges();
+      if (fired) remindTask(fired);
+    }
+
+    if (screen === 'home' && now - lastPush > 120000 && !$('remindOverlay').classList.contains('show')) {
+      const over = overdueTasks();
+      if (over.length) {
+        lastPush = now;
+        say(pick(PUSH_LINES) + '（' + over.length + ' 件）');
+        shakeAvatar();
+      }
+    }
+  }
+
+  /* ══════════════════ 切回前台，补发错过 ══════════════════ */
+  function catchUpMissed() {
+    if (!state.tasks || !state.tasks.length) return;
+
+    const now = Date.now();
+    const todayStart = (() => {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    })();
+
+    // 找出所有：未完成、未触发、时间已过、属于今天范围内的任务
+    const missed = state.tasks.filter(t => {
+      if (t.done || t.fired) return false;
+      const tTime = taskDate(t).getTime();
+      return now >= tTime && tTime >= todayStart;
+    });
+
+    if (!missed.length) return;
+
+    // 按时间升序排列
+    missed.sort((a, b) => taskDate(a).getTime() - taskDate(b).getTime());
+
+    // 逐条错开提醒
+    missed.forEach((t, i) => {
+      setTimeout(() => {
+        // 再次确认（用户可能在延迟期间手动完成了）
+        const live = state.tasks.find(x => x.id === t.id);
+        if (!live || live.done || live.fired) return;
+        live.fired = true;
+        live.level = 1;
+        savePlan();
+        if (screen === 'plan') renderPlan();
+        refreshBadges();
+        remindTask(live);
+      }, i * 900);
+    });
+  }
+
+  /* ══════════════════ 后台保活 Worker ══════════════════ */
+  let tickWorker = null;
+
+  function startTickWorker() {
+    try {
+      const code = [
+        'var id = null;',
+        'self.onmessage = function(e){',
+        '  if (e.data === "start") {',
+        '    if (id) clearInterval(id);',
+        '    id = setInterval(function(){ self.postMessage("tick"); }, 1000);',
+        '  } else if (e.data === "stop") {',
+        '    if (id) { clearInterval(id); id = null; }',
+        '  }',
+        '};'
+      ].join('\n');
+
+      const blob = new Blob([code], { type: 'application/javascript' });
+      const url = URL.createObjectURL(blob);
+      tickWorker = new Worker(url);
+
+      tickWorker.onmessage = function () {
+        globalTick();
+      };
+
+      tickWorker.onerror = function () {
+        // Worker 出错，回退到主线程 setInterval
+        if (tickWorker) { try { tickWorker.terminate(); } catch (e) {} tickWorker = null; }
+        startMainThreadTick();
+      };
+
+      tickWorker.postMessage('start');
+    } catch (e) {
+      // 不支持 Worker，直接回退
+      tickWorker = null;
+      startMainThreadTick();
+    }
+  }
+
+  let mainThreadTickId = null;
+  function startMainThreadTick() {
+    if (mainThreadTickId) return;
+    mainThreadTickId = setInterval(globalTick, 1000);
+  }
+
+  function stopTickWorker() {
+    if (tickWorker) {
+      try { tickWorker.postMessage('stop'); } catch (e) {}
+      try { tickWorker.terminate(); } catch (e) {}
+      tickWorker = null;
+    }
+    if (mainThreadTickId) {
+      clearInterval(mainThreadTickId);
+      mainThreadTickId = null;
+    }
+  }
+
+  /* ══════════════════ 初始化 ══════════════════ */
+  function init() {
+    loadPlan();
+    loadWater();
+    loadMoney();
+    loadChat();
+    loadApiConfig();
+
+    avatarSetting = loadSetting(AVATAR_KEY, { type: 'preset', value: 'pink' });
+    bgSetting = loadSetting(BG_KEY, { type: 'preset', value: 'pink' });
+    applySettings();
+
+    const d = new Date(Date.now() + 60 * 60 * 1000);
+    $('planTime').value = pad(d.getHours()) + ':' + pad(d.getMinutes());
+
+    $('todayMin').textContent = loadFocusStat();
+    $('ringFg').style.strokeDasharray = C;
+    $('ringFg').style.strokeDashoffset = 0;
+
+    renderCats();
+    renderPlan();
+    renderWater();
+    renderMoney();
+    renderChat();
+    renderApiConfig();
+    refreshBadges();
+    say(homeLine());
+
+    document.querySelectorAll('.mode-card').forEach(card => {
+      card.addEventListener('click', () => go(card.dataset.mode));
+    });
+
+    if ('Notification' in window && Notification.permission === 'granted') {
+      $('bell').classList.add('on');
+    }
+
+    // 首次运行先检查一遍
+    globalTick();
+
+    // 启动 Worker 保活（内部有 fallback）
+    startTickWorker();
+
+    // 切回前台：立即检查 + 补发所有错过
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        globalTick();
+        catchUpMissed();
+      }
+    });
+
+    // 页面重新获得焦点
+    window.addEventListener('focus', () => {
+      globalTick();
+      catchUpMissed();
+    });
+
+    // 页面从 bfcache 恢复（部分浏览器切后台很久后会用这个机制）
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) {
+        globalTick();
+        catchUpMissed();
+      }
+    });
+
+    // 页面卸载时清理 Worker
+    window.addEventListener('pagehide', () => {
+      stopTickWorker();
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
